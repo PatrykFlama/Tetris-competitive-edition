@@ -51,7 +51,7 @@ struct Board{
 
     vector< vector<board_type> > board;        //? [row/height][column/width]; width enumerated from 0, height from 1 (with ghost layer)
 
-    const int blocks_diagrams;     // TODO: some representation of blocks
+    const int blocks_diagrams = 5;     // TODO: some representation of blocks
     vector<int> blocks_queue;
 
     /* #endregion */
