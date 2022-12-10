@@ -6,34 +6,24 @@ struct Time{
     int framerate;      // !frames per second
     int time_start;
     int last_block_movement;    // this probably should be in game structure, but at this point in time it is nonexistent
-    int last_frame;
     const int M = 1e7;
 
     Time() : Time(30, 1000){}
     Time(int _framerate, int game_start_delay) : framerate(_framerate), time_start(time()){
         last_block_movement = time() + game_start_delay;
-        last_frame = 0;
     }
 
     int time() {
         return (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count()) % M;
     }
 
-    int ticks(){
-        return ((time()-time_start)*framerate)/1000;
-    }
+    // int ticks(){
+    //     return ((time()-time_start)*framerate)/1000;
+    // }
 
-    int restart_time(){
-        time_start = time();
-    }
-
-    bool next_frame(){
-        if(last_frame < ticks()){
-            last_frame = ticks();
-            return true;
-        }
-        return false;
-    }
+    // int restart_time(){
+    //     time_start = time();
+    // }
 
     bool should_block_fall(int blocks_falling_speed){    // this probably should be in game structure, but at this point in time it is nonexistent
         if(blocks_falling_speed < time() - last_block_movement){
@@ -100,7 +90,7 @@ struct Board{
 
     bool block_detect_colision(int x, int y, bool collision = false){       //? parse block and check for collision; true - colision detected
         // --- detect colision ---
-        if(x == HEIGHT-1) collision = true;     // if floor hit
+        if(x >= HEIGHT-1) collision = true;     // if floor hit
         else if(board[x+1][y] == '#') collision = true;   // if collided with different block
 
         // --- dfs ---
@@ -108,8 +98,9 @@ struct Board{
         const int dirs[4][2] = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 
         FOR(4){
-            if(safe(dirs[i][0], dirs[i][1])) if(board[x+dirs[i][0]][y+dirs[i][1]] == '*'){
-                collision = block_detect_colision(x+dirs[i][0], y+dirs[i][1], collision);
+            int next_x = x+dirs[i][0], next_y = y+dirs[i][1];
+            if(safe(next_x, next_y)) if(board[next_x][next_y] == '*'){
+                collision = block_detect_colision(next_x, next_y, collision);
             }
         }
 
@@ -118,17 +109,25 @@ struct Board{
             board[x][y] = '#';
             return true;
         }
-        board[x][y] = '*';
+        board[x][y] = ' ';
+        board[x+1][y] = '*';
         return false;
     }
 
-    void block_fall(){
+    bool block_fall(){      // fall blocks, return false if there are no blocks
         FOR(h, HEIGHT){
             FOR(w, WIDTH){
-                if(board[h][w] == '*') block_detect_colision(h, w);
-                if(board[h][w] == '*') board[h][w] = ' ', board[h+1][w] = '*';
+                if(board[h][w] == '*'){
+                    block_detect_colision(h, w);
+                    return true;
+                }
             }
         }
+        return false;
+    }
+
+    void spawn_block(){
+
     }
 };
 
@@ -157,27 +156,27 @@ int main(){
     Player player_1;
     // Player player_2;
     const bool game_is_on = true;
-    time.framerate = 3;
+    time.framerate = 2;
+    board.board[0][0] = '*';
 
     while(game_is_on){
         // TODO: some menu things
         // TODO: when game start option has been chosen
-            time.restart_time();
+            // time.restart_time();
+            // board.reset();
+            board.draw_board();
 
         while(board.game_state == 0){       // while game is beeing played
             // TODO: get input
-            // TODO: make move (if possible)
-            // board.draw_board();
+                // TODO: make move (if possible)
+                // TODO: draw board after move
 
             if(time.should_block_fall(board.blocks_falling_speed)){
-                cout << "MOVE\n";
-                board.block_fall();
+                if(!board.block_fall()) board.spawn_block();
                 // TODO: check for game over
                 // TODO: score
                 board.draw_board();
             }
-
-            while(time.next_frame()){}      // wait for next frame TODO: catch user input
         }
         // TODO: check result and make some end_screen
     }
