@@ -2,12 +2,12 @@
 // mandatory libs: cstdlib, windows.h
 // TODO: (in distant future) separate main file to separate ones - probably struct per file + headers + main
 
-
 struct Time{
     int framerate;      // !frames per second
     int time_start;
     int last_block_movement;    // this probably should be in game structure, but at this point in time it is nonexistent
     int last_frame;
+    const int M = 1e7;
 
     Time() : Time(30, 1000){}
     Time(int _framerate, int game_start_delay) : framerate(_framerate), time_start(time()){
@@ -16,7 +16,7 @@ struct Time{
     }
 
     int time() {
-        return chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
+        return (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count()) % M;
     }
 
     int ticks(){
@@ -30,14 +30,13 @@ struct Time{
     bool next_frame(){
         if(last_frame < ticks()){
             last_frame = ticks();
-            cout << "\n----" << ticks() << "----\n";
             return true;
         }
         return false;
     }
 
     bool should_block_fall(int blocks_falling_speed){    // this probably should be in game structure, but at this point in time it is nonexistent
-        if(blocks_falling_speed > time() - last_block_movement){
+        if(blocks_falling_speed < time() - last_block_movement){
             last_block_movement += blocks_falling_speed;
             return true;
         }
@@ -77,20 +76,20 @@ struct Board{
         // --- terminal setup ---
         system("cls");
 
-
         // --- draw ---
-        FOR(WIDTH+2) cout << '-';
+        FOR(WIDTH+2) putchar('-');
         nl;
 
         FOR(h, HEIGHT){
-            cout << '|';
+            putchar('|');
             FOR(w, WIDTH){
-                cout << board[h][w];
+                putchar(board[h][w]);
             }
-            cout << "|\n";
+            putchar('|');
+            nl;
         }
 
-        FOR(WIDTH+2) cout << '-';
+        FOR(WIDTH+2) putchar('-');
         nl;
     }
 
@@ -158,7 +157,7 @@ int main(){
     Player player_1;
     // Player player_2;
     const bool game_is_on = true;
-    time.framerate = 1;
+    time.framerate = 3;
 
     while(game_is_on){
         // TODO: some menu things
@@ -168,9 +167,10 @@ int main(){
         while(board.game_state == 0){       // while game is beeing played
             // TODO: get input
             // TODO: make move (if possible)
-            board.draw_board();
+            // board.draw_board();
 
             if(time.should_block_fall(board.blocks_falling_speed)){
+                cout << "MOVE\n";
                 board.block_fall();
                 // TODO: check for game over
                 // TODO: score
@@ -178,10 +178,7 @@ int main(){
             }
 
             while(time.next_frame()){}      // wait for next frame TODO: catch user input
-            int trash; cin >> trash;
         }
         // TODO: check result and make some end_screen
     }
-
-    
 }
