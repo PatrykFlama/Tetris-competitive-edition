@@ -8,7 +8,7 @@ Tetris game with competetive gamemode!
 ![image](README_files/rotation_origin.png)
 
 ## Work management
-[Project page](https://www.tetris-competetive-edition.atlassian.net)
+[Project page](https://tetris-competetive-edition.atlassian.net)
 
 ## Conventions
 ### Commits
