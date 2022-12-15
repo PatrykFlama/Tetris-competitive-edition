@@ -7,6 +7,9 @@ Tetris game with competetive gamemode!
 ## Blocks rotation
 ![image](README_files/rotation_origin.png)
 
+## Work management
+[Project page](tetris-competetive-edition.atlassian.net)
+
 ## Conventions
 ### Commits
 * https://www.conventionalcommits.org/en/v1.0.0/
