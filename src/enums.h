@@ -1,4 +1,7 @@
-enum TypKlocka
+#ifndef ENUMS_H
+#define ENUMS_H
+
+enum BlockType
 {
     I,
     J,
@@ -9,8 +12,10 @@ enum TypKlocka
     T
 };
 
-enum KierunekObrotu
+enum RotationDirection
 {
-    LEWO,
-    PRAWO
+    LEFT,
+    RIGHT
 };
+
+#endif
