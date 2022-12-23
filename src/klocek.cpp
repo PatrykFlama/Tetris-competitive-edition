@@ -58,8 +58,20 @@ std::vector<std::vector<bool>> Klocek::dajTablice()
 {
     return tablica;
 }
-std::vector<std::vector<bool>> Klocek::obroc(KierunekObrotu kierunekObrotu = PRAWO)
+void Klocek::obroc(KierunekObrotu kierunekObrotu = PRAWO)
 {
-    // TODO
-    return {{}};
+
+    std::vector<std::vector<bool>> nowa_tablica = tablica;
+
+    for(int i = 0; i < wielkosc; i++){
+        for(int j = 0 ; j < wielkosc; j++){
+            if(kierunekObrotu == PRAWO){
+                nowa_tablica[j][wielkosc - i - 1] = tablica[i][j];
+            } else {
+                nowa_tablica[wielkosc - j - 1][i] = tablica[i][j];
+            }
+        }
+    }
+
+    tablica = nowa_tablica;
 }
