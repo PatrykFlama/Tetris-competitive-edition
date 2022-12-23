@@ -45,8 +45,8 @@ unsigned int blockSizes[7] = {4, 3, 3, 2, 3, 3, 3};
 
 Block::Block(BlockType _type = I) : type(_type), size(blockSizes[type]), blockMatrix(blockMatrices[type]) {}
 
-BlockType Block::getType() { return type; }
-std::vector<std::vector<bool>> Block::getMatrix() { return blockMatrix; }
+BlockType Block::getType() const { return type; }
+std::vector<std::vector<bool>> Block::getMatrix() const { return blockMatrix; }
 
 void Block::rotate(RotationDirection rotationDirection = RIGHT)
 {

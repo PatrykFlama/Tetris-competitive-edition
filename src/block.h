@@ -12,8 +12,8 @@ class Block
 
 public:
     Block(BlockType _type);
-    BlockType getType();
-    std::vector<std::vector<bool>> getMatrix();
+    BlockType getType() const;
+    std::vector<std::vector<bool>> getMatrix() const;
     void rotate(RotationDirection rotationDirection);
 };
 
