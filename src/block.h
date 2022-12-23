@@ -1,8 +1,24 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "enums.h"
 #include <vector>
+
+enum BlockType
+{
+    I,
+    J,
+    L,
+    O,
+    S,
+    Z,
+    T
+};
+
+enum RotationDirection
+{
+    LEFT,
+    RIGHT
+};
 
 class Block
 {
