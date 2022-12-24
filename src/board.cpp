@@ -12,7 +12,7 @@ void Position::move(MoveDirection direction)
 Board::Board(uint _HEIGHT = 20, uint _WIDTH = 10): 
 
     HEIGHT(_HEIGHT), WIDTH(_WIDTH), 
-    startingPos(Position(0, (WIDTH - 4) / 2)),  // wyznaczanie pozycji startowej w wierzu, tak żeby macierz4x4 klocka była na środku
+    startingPos(Position(0, (WIDTH - 4) / 2)),  // wyznaczanie pozycji startowej w wierzzu, tak żeby macierz4x4 klocka była na środku
     board(std::vector<std::vector<bool>>(HEIGHT, std::vector<bool>(WIDTH, false))), 
     blockType(std::vector<std::vector<BlockType>>(HEIGHT, std::vector<BlockType>(WIDTH, (BlockType) 0))),
     block(Block((BlockType) 0)),
@@ -25,12 +25,12 @@ void Board::setNewBlock(BlockType newType)  // ustawianie nowego klocka o danym 
     Pos = startingPos;
 }
 
-uint Board::getRowPos()
+int Board::getRowPos()
 {
     return Pos.row;
 }
 
-uint Board::getColPos()
+int Board::getColPos()
 {
     return Pos.col;
 }

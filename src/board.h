@@ -14,7 +14,7 @@ enum MoveDirection
 };
 
 extern constexpr char moveRow[4] = {0, +1, 0, -1};
-extern constexpr char moveCol[4] = {-1, 0, +1, 0};    // imo nie ma co tego trzymać w strukturze pozycji
+extern constexpr char moveCol[4] = {-1, 0, +1, 0};    // imo nie ma sensu tego trzymać w strukturze pozycji
 
 struct Position
 {
@@ -73,8 +73,8 @@ public:
 
     void clear();  
 
-    uint getRowPos();
-    uint getColPos();
+    int getRowPos();
+    int getColPos();
 
     Block getBlock();
 
