@@ -1,120 +1,38 @@
 #include "board.h"
 #include "block.h"
 
-constexpr int movesROW[4] = {0, +1, 0, -1};
-constexpr int movesCOL[4] = {-1, 0, +1, 0};
+Position::Position(int _row, int _col): row(_row), col(_col) {}
 
-Board::Board(unsigned int _HIGHT = 20, unsigned int _WIDTH = 10): 
-    HIGHT(_HIGHT), WIDTH(_WIDTH), 
-    board(std::vector<std::vector<bool>>(HIGHT, std::vector<bool>(WIDTH, false))), 
-    blocktype(std::vector<std::vector<BlockType>>(HIGHT, std::vector<BlockType>(WIDTH, (BlockType) 0))),
+void Position::move(MoveDirection direction)
+{   
+    row += moveRow[direction];
+    col += moveCol[direction];
+}
+
+Board::Board(uint _HEIGHT = 20, uint _WIDTH = 10): 
+
+    HEIGHT(_HEIGHT), WIDTH(_WIDTH), 
+    startingPos(Position(0, (WIDTH - 4) / 2)),  // wyznaczanie pozycji startowej w wierzu, tak żeby macierz4x4 klocka była na środku
+    board(std::vector<std::vector<bool>>(HEIGHT, std::vector<bool>(WIDTH, false))), 
+    blockType(std::vector<std::vector<BlockType>>(HEIGHT, std::vector<BlockType>(WIDTH, (BlockType) 0))),
     block(Block((BlockType) 0)),
-    _ROW((WIDTH - 4) / 2), _COL(0), 
-    ROW(_ROW), COL(_COL) {}
+    Pos(startingPos.row, startingPos.col) {}
 
-void Board::clear(int row, int col)
-{
-    board[row][col] = false;
-    blocktype[row][col] = (BlockType) 0;
+
+void Board::setNewBlock(BlockType newType)  // ustawianie nowego klocka o danym typie na pozycji startowej
+{  
+    block = Block(newType);
+    Pos = startingPos;
 }
 
-void Board::clear(int row)
+uint Board::getRowPos()
 {
-    for(int col = 0; col < WIDTH; col++)  clear(row, col);
+    return Pos.row;
 }
 
-void Board::clear()
+uint Board::getColPos()
 {
-    for(int row = 0; row < HIGHT; row++)  clear(row);
-}
-
-bool Board::isFree(int row, int col)
-{
-    return !board[row][col];
-}
-
-bool Board::isrowFree(int row)
-{
-    for(int col = 0; col < WIDTH; col++)
-        if(!isFree(row, col))   return false;
-
-    return true;
-}
-
-bool Board::isrowFull(int row)
-{
-    for(int col = 0; col < WIDTH; col++)
-        if(isFree(row, col))   return false;
-
-    return true;
-}
-
-bool Board::isLegal(Block newBlock, int new_row, int new_col)
-{
-    std::vector<std::vector<bool>> blockMatrix = newBlock.getMatrix();
-
-    for(unsigned int row = 0; row < blockMatrix.size(); row++)
-    {
-        for(unsigned int col = 0; col < blockMatrix[row].size(); col++)
-        {
-            int new_ROW = new_row + row;
-            int new_COL = new_col + col;
-
-            if(!blockMatrix[row][col])  continue;
-
-            if(new_ROW < 0 || new_ROW >= HIGHT) return false;
-
-            if(new_COL < 0 || new_COL >= WIDTH) return false;
-
-            if(!isFree(new_ROW, new_COL))   return false;
-        }   
-    }
-
-    return true;
-}
-
-void Board::dropRow(int row)
-{
-    if(!isrowFree(row + 1)) return;
-
-    for(int col = 0; col < WIDTH; col++)
-    {
-        board[row + 1][col] = board[row][col];
-        blocktype[row + 1][col] = blocktype[row][col];
-
-        clear(row, col);
-    }
-}
-
-void Board::removeRow(int row)
-{
-    clear(row);
-
-    for(int _row = row - 1; _row >= 0; _row--)
-    {
-        dropRow(_row);
-    }
-}
-
-void Board::fixBoard()
-{
-    for(int row = 0; row < HIGHT; row++)
-    {
-        if(isrowFull(row))
-        {
-            removeRow(row);
-        }
-    }
-}
-
-int Board::getRow()
-{
-    return ROW;
-}
-
-int Board::getCol()
-{
-    return COL;
+    return Pos.col;
 }
 
 Block Board::getBlock()
@@ -122,102 +40,191 @@ Block Board::getBlock()
     return block;
 }
 
-bool Board::getCell(int row, int col)
+bool Board::getCell(Position pos)
 {
-    return board[row][col];
+    return board[pos.row][pos.col];
 }
 
-BlockType Board::getType(int row, int col)
+BlockType Board::getBlockType(Position pos)
 {
-    return blocktype[row][col];
+    return blockType[pos.row][pos.col];
 }
 
-bool Board::canAddBlock(BlockType type)
+void Board::clear(Position pos)
 {
-    return isLegal(Block(type), _ROW, _COL);
+    board[pos.row][pos.col] = false;
+    blockType[pos.row][pos.col] = (BlockType) 0;
 }
 
-bool Board::canMoveBlock(MoveDirection dir)
+void Board::clear(int row)
 {
-    return isLegal(block, ROW + movesROW[dir], COL + movesCOL[dir]);
+    for(uint col = 0; col < WIDTH; ++col)   clear(Position(row, col));
 }
 
-bool Board::canRotateBlock(RotationDirection dir)
+void Board::clear()
 {
-    Block tmp = block;
-    tmp.rotate(dir);
-
-    return isLegal(tmp, ROW, COL);
+    for(uint row = 0; row < HEIGHT; ++row)  clear(row);
 }
 
-bool Board::addBlock(BlockType type)
+bool Board::isCellFree(Position pos)
 {
-    if(canAddBlock(type))
+    return !board[pos.row][pos.col];
+}
+
+bool Board::isRowFree(int row)
+{
+    for(uint col = 0; col < WIDTH; ++col)
+        if(!isCellFree(Position(row, col)))   return false;
+
+    return true;
+}
+
+bool Board::isRowFull(int row)
+{
+    for(uint col = 0; col < WIDTH; ++col)
+        if(isCellFree(Position(row, col)))   return false;
+
+    return true;
+}
+
+bool Board::isLegal(Block newBlock, Position newPos)   // sprawdzanie czy klocek o zadanej pozycji nie koliduje z planszą
+{
+    std::vector<std::vector<bool>> blockMatrix = newBlock.getMatrix();
+
+    for(uint row = 0; row < blockMatrix.size(); ++row)
     {
-        block = Block(type);
-        ROW = _ROW, COL = _COL;
-        return true;
-    }
-    return false;
-}
-
-bool Board::moveBlock(MoveDirection dir)
-{
-    if(canMoveBlock(dir))
-    {
-        ROW += movesROW[dir];
-        COL += movesCOL[dir];
-        return true;
-    }
-    return false;
-}
-
-bool Board::rotateBlock(RotationDirection dir)
-{
-    if(canRotateBlock(dir))
-    {
-        block.rotate(dir);
-        return true;
-    }
-    return false;
-}
-
-bool Board::setOnBoard()
-{
-    if(!isLegal(block, ROW, COL))   return false;
-
-    std::vector<std::vector<bool>> blockMatrix = block.getMatrix();
-
-    for(unsigned int row = 0; row < blockMatrix.size(); row++)
-    {
-        for(unsigned int col = 0; col < blockMatrix[row].size(); col++)
+        for(uint col = 0; col < blockMatrix[row].size(); ++col)
         {
             if(!blockMatrix[row][col])  continue;
 
-            int new_ROW = ROW + row;
-            int new_COL = ROW + col;
-    
-            // isLegal, so all cords have to be good 
+            Position posOnBoard(newPos.row + row, newPos.col + col);
 
-            board[new_ROW][new_COL] = true;
-            blocktype[new_ROW][new_COL] = block.getType();
+            if(posOnBoard.row < 0 || posOnBoard.row >= HEIGHT) return false;
+
+            if(posOnBoard.col < 0 || posOnBoard.col >= WIDTH) return false;
+
+            if(!isCellFree(posOnBoard))   return false;
         }   
     }
 
-    block = Block((BlockType) 0);
+    return true;
+}
 
-    ROW = _ROW, COL = _COL;
+bool Board::canAddBlock(BlockType type) // czy można dodać klocek na pozycję startową, jeśli nie można no to wiadomo koniec gry
+{
+    return isLegal(Block(type), startingPos);
+}
 
-    // it is time to request for new block
+bool Board::addBlock(BlockType type)    // dodawanie klocka na pozycję startową (false - nie można dodać)
+{
+    if(canAddBlock(type))
+    {
+        setNewBlock(type);
+        return true;
+    }
+    return false;
+}
+
+bool Board::canMoveBlock(MoveDirection direction)
+{
+    Position newPos = Pos;
+    newPos.move(direction);
+
+    return isLegal(block, newPos);
+}
+
+bool Board::moveBlock(MoveDirection direction)  
+{
+    if(canMoveBlock(direction))
+    {   // ruszenie klocka na zadaną pozycję
+        Pos.move(direction);
+        return true;
+    }
+    return false;
+}
+
+bool Board::canRotateBlock(RotationDirection direction)
+{
+    Block blockCopy = block;    // kopiowanie klocka, żeby można było zrobić spokojnie obrót, sprawdzić czy jeste poprawy a dopiero potem go zastosować
+    blockCopy.rotate(direction);
+
+    return isLegal(blockCopy, Pos);
+}
+
+bool Board::rotateBlock(RotationDirection direction)
+{
+    if(canRotateBlock(direction))
+    {
+        block.rotate(direction);
+        return true;
+    }
+    return false;
+}
+
+void Board::dropRow(int row)    // spuszczanie wiersza niżej jeśli pod nim jest pusto
+{
+    if(!isRowFree(row + 1)) return;
+
+    for(uint col = 0; col < WIDTH; ++col)
+    {
+        board[row + 1][col] = board[row][col];
+        blockType[row + 1][col] = blockType[row][col];
+    }
+
+    clear(row);
+}
+
+void Board::removeRow(int row)
+{
+    clear(row);
+
+    if(row <= 0)    return;
+
+    for(uint cRow = row - 1; cRow >= 0; --cRow)  dropRow(cRow);
+}
+
+void Board::fixBoard()  // usuwanie tych wiersz, które są pełne i spuszczanie tych pod kótrymi jest pusto
+{
+    for(uint row = 0; row < HEIGHT; ++row)
+        if(isRowFull(row))  removeRow(row);
+}
+
+bool Board::setOnBoard()    // ustawianie klocka na planszy
+{
+    if(!isLegal(block, Pos))   return false;
+
+    std::vector<std::vector<bool>> blockMatrix = block.getMatrix();
+
+    for(uint row = 0; row < blockMatrix.size(); row++)
+    {
+        for(uint col = 0; col < blockMatrix[row].size(); col++)
+        {
+            if(!blockMatrix[row][col])  continue;
+
+            Position posOnBoard(Pos.row + row, Pos.col + col);
+
+            // nowe pozycje na planszy są dobre bo klocek isLegal
+
+            if(!isCellFree(posOnBoard))   return false;
+
+            board[posOnBoard.row][posOnBoard.col] = true;
+            blockType[posOnBoard.col][posOnBoard.row] = block.getType();
+        }   
+    }
+
+    setNewBlock((BlockType) 0); // czyszczenie akutalnego klocka, true - oczekiwanie na nowego klocka
 
     return true;
 }
 
 bool Board::fixBlock()
 {
-    if(canMoveBlock(MoveDirection::DOWN_MOVE))
-    {
-        return true;
-    }
-    return setOnBoard(); // if true then it is time to request new block, else go on
+    if(canMoveBlock(MoveDirection::DOWN))   return true;    // jeśli klock może ruszyc się w dól to można grać dalej
+    return setOnBoard();    // skoro klocek nie może ruszyć się w dół to trzeba go ustawić na planszy
 }
+
+void tick()
+{
+    // TODO
+}
+

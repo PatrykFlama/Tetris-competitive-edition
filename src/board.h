@@ -1,79 +1,89 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <vector>
-
 #include "block.h"
+
+typedef unsigned int uint;
 
 enum MoveDirection
 {
-    LEFT_MOVE,
-    DOWN_MOVE,
-    RIGHT_MOVE,
-    UP_MOVE  
+    LEFT,
+    DOWN,
+    RIGHT,
+    UP
+};
+
+extern constexpr char moveRow[4] = {0, +1, 0, -1};
+extern constexpr char moveCol[4] = {-1, 0, +1, 0};    // imo nie ma co tego trzymać w strukturze pozycji
+
+struct Position
+{
+    int row, col;
+
+    Position();
+    Position(int _row, int _col);
+
+    void move(MoveDirection direction);
+
 };
 
 class Board
 {
-    int HIGHT, WIDTH;
+    uint HEIGHT, WIDTH;
 
-    int _ROW, _COL; // starting pos
+    Position startingPos;
 
     std::vector<std::vector<bool>> board;
-    std::vector<std::vector<BlockType>> blocktype;
+    std::vector<std::vector<BlockType>> blockType;
 
     Block block;
 
-    int ROW, COL;   // current block pos
+    Position Pos;
 
+    void setNewBlock(BlockType type);
+
+    void clear(int row);
+    void clear(Position pos);
+
+    bool isCellFree(Position pos);
+
+    bool isRowFree(int row);
+    bool isRowFull(int row);
+
+    bool isLegal(Block newBlock, Position pos);    
+
+    bool canAddBlock(BlockType type);
+    bool canMoveBlock(MoveDirection direction);
+    bool canRotateBlock(RotationDirection direction);
+
+    void dropRow(int row);
+    void removeRow(int row);
+
+    void fixBoard();
+    bool fixBlock();
+
+    bool setOnBoard(); 
 
 public:
 
     Board();
-    Board(unsigned int _HIGHT, unsigned int _WIDTH);
+    Board(unsigned int _HEIGHT, unsigned int _WIDTH);
 
     void tick();    // TODO
 
     void clear();  
 
-    bool addBlock(BlockType type);
-    bool moveBlock(MoveDirection dir);
-    bool rotateBlock(RotationDirection dir);
-
-    int getRow();
-    int getCol();
+    uint getRowPos();
+    uint getColPos();
 
     Block getBlock();
 
-    bool getCell(int row, int col);
+    bool getCell(Position pos); 
+    BlockType getBlockType(Position pos);
 
-    BlockType getType(int row, int col);
-
-    bool fixBlock();  // TODO if false then setOnBoard else continue ticks/moves etc
-
-private:
-
-    void clear(int row);
-    void clear(int row, int col);
-
-    bool isFree(int row, int col);
-
-    bool isrowFree(int row);
-    bool isrowFull(int row);
-
-    bool isLegal(Block newBlock, int row, int col);    
-
-    bool canAddBlock(BlockType type);
-    bool canMoveBlock(MoveDirection dir);
-    bool canRotateBlock(RotationDirection dir);
-
-    void fixBoard();
-
-    void dropRow(int row);
-    void removeRow(int row);
-
-    bool setOnBoard();  // TODO // if block can't move down
-    // true - everything fine, false - ??? XD
+    bool addBlock(BlockType type);
+    bool moveBlock(MoveDirection direction);
+    bool rotateBlock(RotationDirection direction);
 
 };
 
