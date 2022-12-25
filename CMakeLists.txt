@@ -5,4 +5,8 @@ project(
   LANGUAGES CXX
 )
 
-add_executable(tetris-ce main.cpp)
+add_executable(tetris-ce src/main.cpp)
+target_include_directories(tetris-ce
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+}
