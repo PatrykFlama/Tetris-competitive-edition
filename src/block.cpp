@@ -48,14 +48,14 @@ Block::Block(BlockType _type = I) : type(_type), size(blockSizes[type]), blockMa
 BlockType Block::getType() const { return type; }
 std::vector<std::vector<bool>> Block::getMatrix() const { return blockMatrix; }
 
-void Block::rotate(RotationDirection rotationDirection = RIGHT)
+void Block::rotate(RotationDirection rotationDirection = CLOCKWISE)
 {
     std::vector<std::vector<bool>> newMatrix = blockMatrix;
 
     for (unsigned int x = 0; x < size; ++x)
         for (unsigned int y = 0; y < size; ++y)
         {
-            if (rotationDirection == LEFT)
+            if (rotationDirection == COUNTERCLOCKWISE)
                 newMatrix[size - y - 1][x] = blockMatrix[x][y];
             else
                 newMatrix[y][size - x - 1] = blockMatrix[x][y];
