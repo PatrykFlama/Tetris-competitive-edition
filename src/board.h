@@ -3,6 +3,8 @@
 
 #include "block.h"
 
+#include <array>
+
 typedef unsigned int uint;
 
 typedef std::vector<bool> vBool;
@@ -19,8 +21,11 @@ enum MoveDirection
     UP
 };
 
-extern const char MOVE_ROW[4] = {0, +1, 0, -1};
-extern const char MOVE_COL[4] = {-1, 0, +1, 0};    
+extern const uint standardHEIGHT = 20;
+extern const uint standardWIDTH = 10;
+
+extern const std::array<char, 4> MOVE_ROW = {0, +1, 0, -1};
+extern const std::array<char, 4> MOVE_COL = {-1, 0, +1, 0};    
 
 struct BoardPosition
 {
@@ -35,7 +40,7 @@ struct BoardPosition
 
 class Board
 {
-    const uint HEIGHT {20}, WIDTH {10};
+    const uint HEIGHT {standardHEIGHT}, WIDTH {standardWIDTH}; // typowe wartości
 
     BoardPosition startingPos;
 
@@ -51,16 +56,16 @@ class Board
     void clear(int row);
     void clear(BoardPosition pos);
 
-    bool isCellFree(BoardPosition pos);
+    bool isCellFree(BoardPosition pos) const;
 
-    bool isRowFree(int row);
-    bool isRowFull(int row);
+    bool isRowFree(int row) const;
+    bool isRowFull(int row) const;
 
-    bool doesNotCollideWithBoard(Block newBlock, BoardPosition pos);    
+    bool doesNotCollideWithBoard(Block newBlock, BoardPosition pos) const;    
 
-    bool canAddBlock(BlockType type);
-    bool canMoveBlock(MoveDirection direction);
-    bool canRotateBlock(RotationDirection direction);
+    bool canAddBlock(BlockType type) const;
+    bool canMoveBlock(MoveDirection direction) const;
+    bool canRotateBlock(RotationDirection direction) const;
 
     void dropRow(int row);
     bool removeRow(int row);
@@ -79,13 +84,13 @@ public:
 
     void clear();  
 
-    int getRowPos();
-    int getColPos();
+    int getRowPos() const;
+    int getColPos() const;
 
-    Block getBlock();
+    Block getBlock() const;
 
-    bool getCell(BoardPosition pos); 
-    BlockType getBlockType(BoardPosition pos);
+    bool getCell(BoardPosition pos) const; 
+    BlockType getBlockType(BoardPosition pos) const;
 
     bool attemptToAddeBlock(BlockType type);
     bool attemptToMoveBlock(MoveDirection direction);

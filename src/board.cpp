@@ -12,13 +12,13 @@ void BoardPosition::move(MoveDirection direction)
 Board::Board(uint _HEIGHT, uint _WIDTH): 
 
     HEIGHT(_HEIGHT), WIDTH(_WIDTH), 
-    startingPos(BoardPosition(0, (WIDTH - 4) / 2)),  // wyznaczanie pozycji startowej w wierzzu, tak żeby macierz4x4 klocka była na środku
+    startingPos(BoardPosition((uint) 0, (uint) (WIDTH - 4) / 2)),  // wyznaczanie pozycji startowej w wierzzu, tak żeby macierz4x4 klocka była na środku
     board(vvBool(HEIGHT, vBool(WIDTH, false))), 
     blockType(vvBlockType(HEIGHT, vBlockType(WIDTH, (BlockType) 0))),
     block(Block((BlockType) 0)),
     Pos(startingPos.row, startingPos.col) {}
 
-Board::Board(): Board(20, 10) {}
+Board::Board(): Board(standardHEIGHT, standardWIDTH) {}    // typowe wartości
 
 void Board::setNewBlock(BlockType newType)  // ustawianie nowego klocka o danym typie na pozycji startowej
 {  
@@ -26,27 +26,27 @@ void Board::setNewBlock(BlockType newType)  // ustawianie nowego klocka o danym 
     Pos = startingPos;
 }
 
-int Board::getRowPos()
+int Board::getRowPos() const 
 {
     return Pos.row;
 }
 
-int Board::getColPos()
+int Board::getColPos() const
 {
     return Pos.col;
 }
 
-Block Board::getBlock()
+Block Board::getBlock() const 
 {
     return block;
 }
 
-bool Board::getCell(BoardPosition pos)
+bool Board::getCell(BoardPosition pos) const
 {
     return board[pos.row][pos.col];
 }
 
-BlockType Board::getBlockType(BoardPosition pos)
+BlockType Board::getBlockType(BoardPosition pos) const 
 {
     return blockType[pos.row][pos.col];
 }
@@ -59,20 +59,22 @@ void Board::clear(BoardPosition pos)
 
 void Board::clear(int row)
 {
-    for(uint col = 0; col < WIDTH; ++col)   clear(BoardPosition(row, col));
+    for(uint col = 0; col < WIDTH; ++col)
+        clear(BoardPosition(row, col));
 }
 
 void Board::clear()
 {
-    for(uint row = 0; row < HEIGHT; ++row)  clear(row);
+    for(uint row = 0; row < HEIGHT; ++row)
+        clear(row);
 }
 
-bool Board::isCellFree(BoardPosition pos)
+bool Board::isCellFree(BoardPosition pos) const
 {
     return !board[pos.row][pos.col];
 }
 
-bool Board::isRowFree(int row)
+bool Board::isRowFree(int row) const 
 {
     for(uint col = 0; col < WIDTH; ++col)
         if(!isCellFree(BoardPosition(row, col)))   return false;
@@ -80,7 +82,7 @@ bool Board::isRowFree(int row)
     return true;
 }
 
-bool Board::isRowFull(int row)
+bool Board::isRowFull(int row) const
 {
     for(uint col = 0; col < WIDTH; ++col)
         if(isCellFree(BoardPosition(row, col)))   return false;
@@ -88,7 +90,7 @@ bool Board::isRowFull(int row)
     return true;
 }
 
-bool Board::doesNotCollideWithBoard(Block newBlock, BoardPosition newPos)   // sprawdzanie czy klocek o zadanej pozycji nie koliduje z planszą
+bool Board::doesNotCollideWithBoard(Block newBlock, BoardPosition newPos) const  // sprawdzanie czy klocek o zadanej pozycji nie koliduje z planszą
 {
     vvBool blockMatrix = newBlock.getMatrix();
 
@@ -111,7 +113,7 @@ bool Board::doesNotCollideWithBoard(Block newBlock, BoardPosition newPos)   // s
     return true;   // no nie koliduje z planszą
 }
 
-bool Board::canAddBlock(BlockType type) // czy można dodać klocek na pozycję startową, jeśli nie można no to wiadomo koniec gry
+bool Board::canAddBlock(BlockType type) const // czy można dodać klocek na pozycję startową, jeśli nie można no to wiadomo koniec gry
 {
 return doesNotCollideWithBoard(Block(type), startingPos);
 }
@@ -126,7 +128,7 @@ bool Board::attemptToAddeBlock(BlockType type)    // dodawanie klocka na pozycj�
     return false;
 }
 
-bool Board::canMoveBlock(MoveDirection direction)
+bool Board::canMoveBlock(MoveDirection direction) const
 {
     BoardPosition newPos = Pos;
     newPos.move(direction);
@@ -144,7 +146,7 @@ bool Board::attemptToMoveBlock(MoveDirection direction)
     return false;
 }
 
-bool Board::canRotateBlock(RotationDirection direction)
+bool Board::canRotateBlock(RotationDirection direction) const
 {
     Block blockCopy = block;    // kopiowanie klocka, żeby można było zrobić spokojnie obrót, sprawdzić czy jeste poprawy a dopiero potem go zastosować
     blockCopy.rotate(direction);
@@ -181,7 +183,8 @@ bool Board::removeRow(int row)
 
     clear(row);
 
-    for(int cRow = row - 1; cRow >= 0; --cRow)  dropRow(cRow);
+    for(int cRow = row - 1; cRow >= 0; --cRow)  
+        dropRow(cRow);
 
     return 1;
 }
@@ -230,8 +233,13 @@ bool Board::fixBlock()
     return setOnBoard();    // skoro klocek nie może ruszyć się w dół to trzeba go ustawić na planszy
 }
 
-void tick()
+void Board::tick()
 {
     // TODO
+}
+
+int main()
+{
+    Board plansza;
 }
 

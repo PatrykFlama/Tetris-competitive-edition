@@ -16,8 +16,8 @@ enum BlockType
 
 enum RotationDirection
 {
-    LEFT,
-    RIGHT
+    CLOCKWISE,
+    COUNTERCLOCKWISE
 };
 
 class Block
