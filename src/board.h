@@ -5,6 +5,12 @@
 
 typedef unsigned int uint;
 
+typedef std::vector<bool> vBool;
+typedef std::vector<vBool> vvBool;
+
+typedef std::vector<BlockType> vBlockType;
+typedef std::vector<vBlockType> vvBlockType;
+
 enum MoveDirection
 {
     LEFT,
@@ -13,15 +19,15 @@ enum MoveDirection
     UP
 };
 
-extern constexpr char moveRow[4] = {0, +1, 0, -1};
-extern constexpr char moveCol[4] = {-1, 0, +1, 0};    // imo nie ma sensu tego trzymać w strukturze pozycji
+extern const char MOVE_ROW[4] = {0, +1, 0, -1};
+extern const char MOVE_COL[4] = {-1, 0, +1, 0};    
 
-struct Position
+struct BoardPosition
 {
     int row, col;
 
-    Position();
-    Position(int _row, int _col);
+    BoardPosition();
+    BoardPosition(int _row, int _col);
 
     void move(MoveDirection direction);
 
@@ -29,37 +35,37 @@ struct Position
 
 class Board
 {
-    uint HEIGHT, WIDTH;
+    const uint HEIGHT {20}, WIDTH {10};
 
-    Position startingPos;
+    BoardPosition startingPos;
 
-    std::vector<std::vector<bool>> board;
-    std::vector<std::vector<BlockType>> blockType;
+    vvBool board;
+    vvBlockType blockType;
 
     Block block;
 
-    Position Pos;
+    BoardPosition Pos;
 
     void setNewBlock(BlockType type);
 
     void clear(int row);
-    void clear(Position pos);
+    void clear(BoardPosition pos);
 
-    bool isCellFree(Position pos);
+    bool isCellFree(BoardPosition pos);
 
     bool isRowFree(int row);
     bool isRowFull(int row);
 
-    bool isLegal(Block newBlock, Position pos);    
+    bool doesNotCollideWithBoard(Block newBlock, BoardPosition pos);    
 
     bool canAddBlock(BlockType type);
     bool canMoveBlock(MoveDirection direction);
     bool canRotateBlock(RotationDirection direction);
 
     void dropRow(int row);
-    void removeRow(int row);
+    bool removeRow(int row);
 
-    void fixBoard();
+    uint fixBoard();
     bool fixBlock();
 
     bool setOnBoard(); 
@@ -67,7 +73,7 @@ class Board
 public:
 
     Board();
-    Board(unsigned int _HEIGHT, unsigned int _WIDTH);
+    Board(uint _HEIGHT, uint _WIDTH);
 
     void tick();    // TODO
 
@@ -78,12 +84,12 @@ public:
 
     Block getBlock();
 
-    bool getCell(Position pos); 
-    BlockType getBlockType(Position pos);
+    bool getCell(BoardPosition pos); 
+    BlockType getBlockType(BoardPosition pos);
 
-    bool addBlock(BlockType type);
-    bool moveBlock(MoveDirection direction);
-    bool rotateBlock(RotationDirection direction);
+    bool attemptToAddeBlock(BlockType type);
+    bool attemptToMoveBlock(MoveDirection direction);
+    bool attemptToRotateBlock(RotationDirection direction);
 
 };
 
