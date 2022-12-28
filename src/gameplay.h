@@ -4,15 +4,8 @@
 #include "block.h"
 #include "board.h"
 
-#ifndef VECTOR
-#define VECTOR
 #include <vector>
-#endif
-
-#ifndef ALGORITHM
-#define ALGORITHM
 #include <algorithm>
-#endif
 
 class Gameplay{
     Board board;
