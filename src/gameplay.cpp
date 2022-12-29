@@ -31,8 +31,8 @@ bool Gameplay::spawnBlock(){
 }
 
 void Gameplay::onGameTick(){
-    if(!board.canMoveBlock(DOWN)){      //! TODO: make it accessible
-        uint linesBroken = board.fixBoard();        //! TODO: make it accessible
+    if(!board.canMoveBlock(DOWN)){
+        uint linesBroken = board.fixBoard();
         // score.addScore(linesBroken); (or smth like that)
         spawnBlock();
     }

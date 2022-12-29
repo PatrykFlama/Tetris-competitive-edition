@@ -43,10 +43,7 @@ class Gameplay{
     void onGameTick();      // try to fall block, solidify block, break lines, count score, etc;
     void gameOver();        // execute game over stuff, called upon game over
     void gameLoop();        // merge all game stuff to do
-
-    //? ------ EXTERNAL GAMEPLAY MANAGEMENT ------
     void changeDiffLevel(int new_difficulty);       // change difficulty level
-    //void syncGameClock(bool sync);                  // true - game will use its internal action tick, false - game will use tick() function as tick
     
 public:
     Gameplay();

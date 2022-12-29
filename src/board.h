@@ -64,13 +64,11 @@ class Board
     bool doesNotCollideWithBoard(Block newBlock, BoardPosition pos) const;    
 
     bool canAddBlock(BlockType type) const;
-    bool canMoveBlock(MoveDirection direction) const;
     bool canRotateBlock(RotationDirection direction) const;
 
     void dropRow(int row);
     bool removeRow(int row);
 
-    uint fixBoard();
     bool fixBlock();
 
     bool setOnBoard(); 
@@ -92,6 +90,9 @@ public:
     bool getCell(BoardPosition pos) const; 
     BlockType getBlockType(BoardPosition pos) const;
 
+    bool canMoveBlock(MoveDirection direction) const;
+    uint fixBoard();
+    
     bool attemptToAddeBlock(BlockType type);
     bool attemptToMoveBlock(MoveDirection direction);
     bool attemptToRotateBlock(RotationDirection direction);
