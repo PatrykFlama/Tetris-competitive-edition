@@ -7,6 +7,8 @@
 #include <vector>
 #include <algorithm>
 
+typedef unsigned int uint;
+
 class Gameplay{
     Board board;
     // Score score; // TODO: class for scoring system
@@ -33,7 +35,7 @@ class Gameplay{
      19-28          2 (0.03s)
      29+            1 (0.02s)
     */
-    int combo;      // line breaks combo counter
+    uint combo;      // line breaks combo counter
     bool isGameOver;      // is the game lost/over
 
     //? ------ GAMEPLAY MECHANICS ------
@@ -51,8 +53,8 @@ public:
     // Gameplay(Player *_player);
     
     bool isLost() const;     // is the game lost
-    int returnScore() const;    // TODO: return game score
-    int returnDiffLevel() const;    // return difficulty level
+    uint returnScore() const;    // TODO: return game score
+    uint returnDiffLevel() const;    // return difficulty level
     
 };
 
