@@ -71,7 +71,6 @@ class Board
 
     bool fixBlock();
 
-    bool setOnBoard(); 
 
 public:
 
@@ -87,6 +86,7 @@ public:
 
     Block getBlock() const;
 
+    bool setOnBoard(); 
     bool getCell(BoardPosition pos) const; 
     BlockType getBlockType(BoardPosition pos) const;
 
