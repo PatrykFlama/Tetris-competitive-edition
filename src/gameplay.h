@@ -3,6 +3,9 @@
 
 #include "block.h"
 #include "board.h"
+#include "player.h"
+#include "time.h"
+#include "score.h"
 
 #include <vector>
 #include <algorithm>
@@ -11,9 +14,9 @@ typedef unsigned int uint;
 
 class Gameplay{
     Board board;
-    // Score score; // TODO: class for scoring system
-    // Time time; // TODO: class for time management
-    // Player player; // TODO: class for player input
+    Score score; // TODO: class for scoring system
+    Time time; // TODO: class for time management
+    Player player; // TODO: class for player input
     std::vector<BlockType> blocksQueue;    // queue for next blocks, size 2*7
     int blocksQueuePointer;
     int difficulty_level;
@@ -44,14 +47,14 @@ class Gameplay{
     void makePlayerMove();      // TODO: try to execute player move, if there is one
     void onGameTick();      // try to fall block, solidify block, break lines, count score, etc;
     void gameOver();        // execute game over stuff, called upon game over
-    void gameLoop();        // merge all game stuff to do
     void changeDiffLevel(int new_difficulty);       // change difficulty level
     
 public:
-    Gameplay();
-    Gameplay(int boardHeight, int boardWidth);
+    Gameplay(Player player);
+    Gameplay(Player player, int boardHeight, int boardWidth);
     // Gameplay(Player *_player);
     
+    void gameLoop();        // merge all game stuff to do
     bool isLost() const;     // is the game lost
     uint returnScore() const;    // TODO: return game score
     uint returnDiffLevel() const;    // return difficulty level

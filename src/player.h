@@ -1,0 +1,13 @@
+enum Move
+{
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    SLOW_DOWN,
+    FAST_DOWN,
+    ROTATE_COUNTERCLOCKWISE,
+    ROTATE_CLOCKWISE,
+    TO_HOLDING_CELL,
+    NONE
+};
+
+// TODO

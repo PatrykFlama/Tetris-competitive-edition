@@ -1,18 +1,17 @@
-#include "block.h"
-#include "board.h"
 #include "gameplay.h"
 
-Gameplay::Gameplay() : Gameplay(standardHEIGHT, standardWIDTH) {}
+Gameplay::Gameplay(Player _player) : Gameplay(_player, standardHEIGHT, standardWIDTH) {}
 
-Gameplay::Gameplay(int boardHeight, int boardWidth) :
+Gameplay::Gameplay(Player _player, int boardHeight, int boardWidth) :
+    player(_player),
     board(boardHeight, boardWidth),
     difficulty_level(0),
     combo(0),
     blocksQueuePointer(0),
     isGameOver(false)
 {
-    for(int i = 0; i < 2; i++)
-        for(int type = 0; type < 7; type++){
+    for(uint i = 0; i < 2; i++)
+        for(uint type = 0; type < 7; type++){
             BlockType block = static_cast<BlockType>(type);
             blocksQueue.push_back(block);
         }
@@ -39,11 +38,37 @@ void Gameplay::onGameTick(){
 }
 
 void Gameplay::makePlayerMove(){
-    /* concept
-    if(player.getInput != NONE){
-        MAKE_MOVE
+    Move move = player.getInput();
+
+    switch (move){
+        case MOVE_LEFT:
+            board.attemptToMoveBlock(LEFT);
+            break;
+        case MOVE_RIGHT:
+            board.attemptToMoveBlock(RIGHT);
+            break;
+        case SLOW_DOWN:
+            board.attemptToMoveBlock(DOWN);
+            break;
+        case FAST_DOWN:
+            while(board.attemptToMoveBlock(DOWN)){}
+            board.setOnBoard();
+            break;
+        case ROTATE_COUNTERCLOCKWISE:
+            board.attemptToRotateBlock(COUNTERCLOCKWISE);
+            break;
+        case ROTATE_CLOCKWISE:
+            board.attemptToRotateBlock(CLOCKWISE);
+            break;
+        case TO_HOLDING_CELL:
+            board.storeBlock();// TODO - store active block and change it with stored one (if exists)
+            break;
+        
+        default:
+            break;
     }
-    */
+
+    if(move != NONE){} // TODO refresh UI
 }
 
 void Gameplay::changeDiffLevel(int new_difficulty){
@@ -67,10 +92,10 @@ bool Gameplay::isLost() const{
     return isGameOver;
 }
 
-int Gameplay::returnScore() const{
-    // return Score.score;
+uint Gameplay::returnScore() const{
+    return Score.score;
 }
 
-int Gameplay::returnDiffLevel() const{
+uint Gameplay::returnDiffLevel() const{
     return difficulty_level;
 }
