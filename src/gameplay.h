@@ -18,8 +18,8 @@ class Gameplay{
     Time time; // TODO: class for time management
     Player player; // TODO: class for player input
     std::vector<BlockType> blocksQueue;    // queue for next blocks, size 2*7
-    int blocksQueuePointer;
-    int difficulty_level;
+    uint blocksQueuePointer;
+    uint difficulty_level;
     /*
     Level         Drop speed (frames/line)
      00            48 (0.8 s)
@@ -38,7 +38,6 @@ class Gameplay{
      19-28          2 (0.03s)
      29+            1 (0.02s)
     */
-    uint combo;      // line breaks combo counter
     bool isGameOver;      // is the game lost/over
 
     //? ------ GAMEPLAY MECHANICS ------
@@ -47,11 +46,11 @@ class Gameplay{
     void makePlayerMove();      // TODO: try to execute player move, if there is one
     void onGameTick();      // try to fall block, solidify block, break lines, count score, etc;
     void gameOver();        // execute game over stuff, called upon game over
-    void changeDiffLevel(int new_difficulty);       // change difficulty level
+    void changeDiffLevel(uint new_difficulty);       // change difficulty level
     
 public:
-    Gameplay(Player player);
-    Gameplay(Player player, int boardHeight, int boardWidth);
+    Gameplay(Player _player);
+    Gameplay(Player _player, uint boardHeight, uint boardWidth);
     // Gameplay(Player *_player);
     
     void gameLoop();        // merge all game stuff to do
