@@ -2,11 +2,10 @@
 
 Gameplay::Gameplay(Player _player) : Gameplay(_player, standardHEIGHT, standardWIDTH) {}
 
-Gameplay::Gameplay(Player _player, int boardHeight, int boardWidth) :
+Gameplay::Gameplay(Player _player, uint boardHeight, uint boardWidth) :
     player(_player),
     board(boardHeight, boardWidth),
     difficulty_level(0),
-    combo(0),
     blocksQueuePointer(0),
     isGameOver(false)
 {
@@ -31,8 +30,9 @@ bool Gameplay::spawnBlock(){
 
 void Gameplay::onGameTick(){
     if(!board.canMoveBlock(DOWN)){
-        uint linesBroken = board.fixBoard();
-        // score.addScore(linesBroken); (or smth like that)
+        board.setOnBoard();
+        uint lines_broken = board.fixBoard();
+        score.blockDropped(lines_broken, false);
         spawnBlock();
     }
 }
@@ -53,6 +53,9 @@ void Gameplay::makePlayerMove(){
         case FAST_DOWN:
             while(board.attemptToMoveBlock(DOWN)){}
             board.setOnBoard();
+            // ui update for pleasent visuals
+            uint lines_broken = board.fixBoard();
+            score.blockDropped(lines_broken, true);
             break;
         case ROTATE_COUNTERCLOCKWISE:
             board.attemptToRotateBlock(COUNTERCLOCKWISE);
@@ -93,7 +96,7 @@ bool Gameplay::isLost() const{
 }
 
 uint Gameplay::returnScore() const{
-    return Score.score;
+    return score.returnScore();
 }
 
 uint Gameplay::returnDiffLevel() const{
