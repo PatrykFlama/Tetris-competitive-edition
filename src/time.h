@@ -6,6 +6,7 @@ class Time {
     int framerate;
     int time_start;
     int game_start_delay;
+    int last_block_movement;
     
 public:
 	/*
@@ -29,7 +30,8 @@ public:
     Time(int _framerate, int _time_start, int _game_start_delay);
 	int getSystemTime();
 	int getLastDropTime();
-	int getDropSpeed();
+	//int getDropSpeed();
+	bool should_block_fall(int _blocks_falling_speed);
 };
 
 #endif
