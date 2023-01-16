@@ -14,8 +14,6 @@ enum BlockType
     T
 };
 
-std::vector<std::vector<std::vector<bool>>> blockMatrices;
-
 enum RotationDirection
 {
     CLOCKWISE,
