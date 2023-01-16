@@ -35,6 +35,7 @@ void UI::drawBorder() {
 
 void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score, Block nextBlock){
 
+    //ile score i next block ma byc od gornej lewej krawedzi
     int OFFSETY = 2;
     int OFFSETX = 4;
 
@@ -42,6 +43,8 @@ void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score,
 
 
     drawBorder();
+
+    //rysowanie scora
     char scoreString[] = "Score:";
 
     char scoreInt[std::to_string(score).length() + 1]; 
@@ -51,6 +54,7 @@ void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score,
     mvprintw(OFFSETY, OFFSETX + sizeof(scoreString), scoreInt);
 
 
+    //rysowanie next block ramka
     mvprintw(OFFSETY + 2, OFFSETX, "Next:");
     attron(COLOR_PAIR(1));
     mvprintw(OFFSETY + 3, OFFSETX, "==========");
@@ -59,6 +63,8 @@ void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score,
     }
     mvprintw(OFFSETY + 8, OFFSETX, "==========");
     attroff(COLOR_PAIR(1));
+
+    //rysowanie next block zawartosc (czyli kloc)
     attron( A_REVERSE );
     for(int i = 0 ; i < 4; i++){
         for(int j = 0; j < 4; j++){
@@ -69,12 +75,14 @@ void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score,
     }
     attroff( A_REVERSE );
 
+    //rysowanie planszy 
     //TODO 2 boardsy
     int boardWidth = boards[0][0].size();
     int boardHeight = boards[0].size();
     int boardStartX = ((columns/2) - (boardWidth));
     int boardStartY = rows - boardHeight - 2;
 
+    //ramka
     attron(COLOR_PAIR(2));
     for(int i = -1 ; i < boardHeight+1 ; i++) {
         mvprintw(boardStartY + i, boardStartX - 1, "I");
@@ -87,6 +95,8 @@ void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score,
     
     attroff(COLOR_PAIR(2));
 
+
+    //zawartosc planszy 
     attron( A_REVERSE );
 
     for(int i = 0 ; i < boardHeight; i++){
@@ -98,5 +108,5 @@ void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score,
     }
     
     attroff( A_REVERSE );
-
+    refresh();
 }
