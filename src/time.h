@@ -13,7 +13,7 @@ private:
     int time_start;
     milliseconds game_start_delay;
     int last_block_movement;
-    int difficulty_level;
+    int *difficulty_level;
     std::vector<milliseconds> block_drop_speed;
     int getSystemTime();
     int getLastDropTime();
@@ -21,10 +21,10 @@ private:
     int getLastBlockMovement();
     
 public:
-	Time(): block_drop_speed(BLOCKDROPSPEEDSIZE) {}
-    Time(int _framerate, milliseconds _game_start_delay, int _difficulty_level);
+	Time(int *_difficulty_level);
+    Time(int *_difficulty_level, int _framerate, milliseconds _game_start_delay);
 	int convertTime(milliseconds _T);
-	bool tick();
+	bool shouldBlockFall();
 };
 
 #endif

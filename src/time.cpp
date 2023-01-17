@@ -34,8 +34,9 @@ int Time::convertTime(milliseconds T) {
 	return convertedT;
 }
 
-Time::Time(int _framerate, milliseconds _game_start_delay, int _difficulty_level) : framerate(_framerate), time_start(getSystemTime()), game_start_delay(_game_start_delay){
+Time::Time(int *_difficulty_level, int _framerate, milliseconds _game_start_delay) : framerate(_framerate), time_start(getSystemTime()), game_start_delay(_game_start_delay), difficulty_level(_difficulty_level){
 	last_block_movement = getSystemTime() + convertTime(_game_start_delay);
+	block_drop_speed.resize(30);
 	block_drop_speed[0] = 800ms, block_drop_speed[1] = 720ms, block_drop_speed[2] = 630ms, block_drop_speed[3] = 550ms, block_drop_speed[4] = 470ms, 
 	block_drop_speed[5] = 380ms, block_drop_speed[6] = 300ms, block_drop_speed[7] = 220ms, block_drop_speed[8] = 130ms, block_drop_speed[9] = 100ms,
 	block_drop_speed[10] = 80ms, block_drop_speed[11] = 80ms, block_drop_speed[12] = 80ms, block_drop_speed[13] = 70ms, block_drop_speed[14] = 70ms,
@@ -48,12 +49,12 @@ int Time::getLastBlockMovement() {
 }
 
 int Time::getDropSpeed() {
-	if (difficulty_level > 29) return convertTime(block_drop_speed[29]);
-	return convertTime(block_drop_speed[difficulty_level]);
+	if (*difficulty_level > 29) return convertTime(block_drop_speed[29]);
+	return convertTime(block_drop_speed[*difficulty_level]);
 }
 
-bool Time::tick() {
-	if (getSystemTime() - getLastBlockMovement() >= getDropSpeed()) {
+bool Time::shouldBlockFall() {
+	if (getSystemTime() - last_block_movement >= getDropSpeed()) {
 		last_block_movement = getSystemTime();
 		return true;
 	}
