@@ -42,7 +42,7 @@ class Gameplay{
 
     //? ------ GAMEPLAY MECHANICS ------
     void redrawBlocks();    // put new set of blocks to queue
-    bool spawnBlock();     // spawn new block from queue, false if cant spawn block == game over
+    void spawnBlock();     // spawn new block from queue, false if cant spawn block == game over
     void makePlayerMove();      // TODO: try to execute player move, if there is one
     void onGameTick();      // try to fall block, solidify block, break lines, count score, etc;
     void gameOver();        // execute game over stuff, called upon game over

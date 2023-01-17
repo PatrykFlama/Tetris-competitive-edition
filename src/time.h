@@ -9,21 +9,21 @@ typedef unsigned int uint;
 
 class Time {
 private:
-    int framerate;
-    int time_start;
+    uint framerate;
+    uint time_start;
     milliseconds game_start_delay;
-    int last_block_movement;
-    int *difficulty_level;
+    uint last_block_movement;
+    uint *difficulty_level;
     std::vector<milliseconds> block_drop_speed;
-    int getSystemTime();
-    int getLastDropTime();
-    int getDropSpeed();
-    int getLastBlockMovement();
+    uint getSystemTime();
+    uint getLastDropTime();
+    uint getDropSpeed();
+    uint getLastBlockMovement();
     
 public:
-	Time(int *_difficulty_level);
-    Time(int *_difficulty_level, int _framerate, milliseconds _game_start_delay);
-	int convertTime(milliseconds _T);
+	Time(uint *_difficulty_level);
+    Time(uint *_difficulty_level, uint _framerate, milliseconds _game_start_delay);
+	uint convertTime(milliseconds _T);
 	bool shouldBlockFall();
 };
 

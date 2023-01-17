@@ -7,7 +7,8 @@ Gameplay::Gameplay(Player _player, uint boardHeight, uint boardWidth) :
     board(boardHeight, boardWidth),
     difficulty_level(0),
     blocksQueuePointer(0),
-    isGameOver(false)
+    isGameOver(false),
+    time(&difficulty_level)
 {
     for(uint i = 0; i < 2; i++)
         for(uint type = 0; type < 7; type++){
@@ -21,7 +22,7 @@ void Gameplay::redrawBlocks(){
     blocksQueuePointer = 13;
 }
 
-bool Gameplay::spawnBlock(){
+void Gameplay::spawnBlock(){
     if(blocksQueuePointer < 0) redrawBlocks();
     if(!board.attemptToAddeBlock(blocksQueue[blocksQueuePointer--])){
         isGameOver = true;
@@ -74,21 +75,20 @@ void Gameplay::makePlayerMove(){
     if(move != NONE){} // TODO refresh UI
 }
 
-void Gameplay::changeDiffLevel(int new_difficulty){
+void Gameplay::changeDiffLevel(uint new_difficulty){
     difficulty_level = new_difficulty;
-    // TODO: time.changeTickrate(difficulty_level);
 }
 
 void Gameplay::gameOver(){
-    // time.stop;
+	
 }
 
 void Gameplay::gameLoop(){
     makePlayerMove();
-    // TODO: if(time.nextTick()){
+    if(time.shouldBlockFall()) {
         onGameTick();
         if(gameOver) gameOver();
-    // }
+    }
 }
 
 bool Gameplay::isLost() const{

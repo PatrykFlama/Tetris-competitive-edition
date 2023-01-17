@@ -22,20 +22,20 @@ using namespace std::chrono_literals;
      29+            1 (0.02s)
     */
 
-const int M = 1e7;
+const uint M = 1e7;
 
-int Time::getSystemTime() {
-	int systemTime = std::chrono::duration_cast<milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() % M;
+uint Time::getSystemTime() {
+	uint systemTime = std::chrono::duration_cast<milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() % M;
 	return systemTime;
 }
 
-int Time::convertTime(milliseconds T) {
-	int convertedT = std::chrono::duration_cast<milliseconds>(T).count() % M;
+uint Time::convertTime(milliseconds T) {
+	uint convertedT = std::chrono::duration_cast<milliseconds>(T).count() % M;
 	return convertedT;
 }
 
-Time::Time(int *_difficulty_level, int _framerate, milliseconds _game_start_delay) : framerate(_framerate), time_start(getSystemTime()), game_start_delay(_game_start_delay), difficulty_level(_difficulty_level){
-	last_block_movement = getSystemTime() + convertTime(_game_start_delay);
+Time::Time(uint *_difficulty_level, uint _framerate, milliseconds _game_start_delay) : framerate(_framerate), time_start(getSystemTime()), game_start_delay(_game_start_delay), difficulty_level(_difficulty_level){
+	last_block_movement = (getSystemTime() + convertTime(_game_start_delay)) % M;
 	block_drop_speed.resize(30);
 	block_drop_speed[0] = 800ms, block_drop_speed[1] = 720ms, block_drop_speed[2] = 630ms, block_drop_speed[3] = 550ms, block_drop_speed[4] = 470ms, 
 	block_drop_speed[5] = 380ms, block_drop_speed[6] = 300ms, block_drop_speed[7] = 220ms, block_drop_speed[8] = 130ms, block_drop_speed[9] = 100ms,
@@ -44,11 +44,11 @@ Time::Time(int *_difficulty_level, int _framerate, milliseconds _game_start_dela
 	for (uint level = 19; level <= 29; level ++) block_drop_speed[level] = 30ms;
 }
 
-int Time::getLastBlockMovement() {
+uint Time::getLastBlockMovement() {
 	return last_block_movement;
 }
 
-int Time::getDropSpeed() {
+uint Time::getDropSpeed() {
 	if (*difficulty_level > 29) return convertTime(block_drop_speed[29]);
 	return convertTime(block_drop_speed[*difficulty_level]);
 }
