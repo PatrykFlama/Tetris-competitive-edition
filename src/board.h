@@ -2,16 +2,9 @@
 #define BOARD_H
 
 #include "block.h"
-
 #include <array>
-
-typedef unsigned int uint;
-
-typedef std::vector<bool> vBool;
-typedef std::vector<vBool> vvBool;
-
-typedef std::vector<BlockType> vBlockType;
-typedef std::vector<vBlockType> vvBlockType;
+#include <vector>
+#include <exception>
 
 enum MoveDirection
 {
@@ -21,82 +14,74 @@ enum MoveDirection
     UP
 };
 
-extern const uint standardHEIGHT = 20;
-extern const uint standardWIDTH = 10;
+const unsigned int DEFAULT_BOARD_HEIGHT = 20;
+const unsigned int DEFAULT_BOARD_WIDTH = 10;
 
-extern const std::array<char, 4> MOVE_ROW = {0, +1, 0, -1};
-extern const std::array<char, 4> MOVE_COL = {-1, 0, +1, 0};    
+const std::array<int, 4> MOVE_ROW = {0, +1, 0, -1};
+const std::array<int, 4> MOVE_COL = {-1, 0, +1, 0};
 
 struct BoardPosition
 {
-    int row, col;
+    int row;
+    int col;
 
-    BoardPosition();
-    BoardPosition(int _row, int _col);
+    BoardPosition(int _row = 0, int _col = 0);
 
     void move(MoveDirection direction);
-
 };
 
 class Board
 {
-    const uint HEIGHT {standardHEIGHT}, WIDTH {standardWIDTH}; // typowe wartości
+    const unsigned int HEIGHT, WIDTH;
 
-    BoardPosition startingPos;
+    BoardPosition startingPosition;
 
-    vvBool board;
-    vvBlockType blockType;
+    std::vector<std::vector<bool>> board;
+    std::vector<std::vector<BlockType>> blockTypes;
 
-    Block block;
+    void resizeBoard(unsigned int newHeight, unsigned int newWidth);
 
-    BoardPosition Pos;
+    bool hasActiveBlock;
+    Block activeBlock;
+    BoardPosition activeBlockPosition;
 
     void setNewBlock(BlockType type);
 
-    void clear(int row);
-    void clear(BoardPosition pos);
+    void clearPosition(BoardPosition position);
+    void clearRow(unsigned int row);
 
-    bool isCellFree(BoardPosition pos) const;
-
-    bool isRowFree(int row) const;
-    bool isRowFull(int row) const;
-
-    bool doesNotCollideWithBoard(Block newBlock, BoardPosition pos) const;    
-
-    bool canAddBlock(BlockType type) const;
-    bool canRotateBlock(RotationDirection direction) const;
-
-    void dropRow(int row);
-    bool removeRow(int row);
-
-    bool fixBlock();
-
+    void dropRow(unsigned int row);
+    void removeRow(unsigned int row);
 
 public:
+    Board(unsigned int _HEIGHT = DEFAULT_BOARD_HEIGHT, unsigned int _WIDTH = DEFAULT_BOARD_WIDTH);
 
-    Board();
-    Board(uint _HEIGHT, uint _WIDTH);
+    void tick(); // TODO
 
-    void tick();    // TODO
+    const BoardPosition &getActiveBlockPosition() const;
+    const Block &getActiveBlock() const;
 
-    void clear();  
-
-    int getRowPos() const;
-    int getColPos() const;
-
-    Block getBlock() const;
-
-    bool setOnBoard(); 
-    bool getCell(BoardPosition pos) const; 
-    BlockType getBlockType(BoardPosition pos) const;
+    bool isPositionValid(BoardPosition position) const;
+    bool attemptToSolidify();
+    BlockType getBlockTypeAt(BoardPosition position) const;
 
     bool canMoveBlock(MoveDirection direction) const;
-    uint fixBoard();
-    
-    bool attemptToAddeBlock(BlockType type);
-    bool attemptToMoveBlock(MoveDirection direction);
-    bool attemptToRotateBlock(RotationDirection direction);
 
+    bool isCellFull(BoardPosition position) const;
+    bool isCellFree(BoardPosition position) const;
+    bool isRowFree(unsigned int row) const;
+    bool isRowFull(unsigned int row) const;
+
+    bool canAddNewBlock(BlockType type) const;
+    bool canRotateActiveBlock(RotationDirection direction) const;
+    bool doesNotCollideWithBoard(Block newBlock, BoardPosition newPosition) const;
+
+    bool attemptToAddNewBlock(BlockType type);
+    bool attemptToMoveActiveBlock(MoveDirection direction);
+    bool attemptToRotateActiveBlock(RotationDirection direction);
+
+    unsigned int fixBoard();
+    void clearBoard();
 };
 
 #endif

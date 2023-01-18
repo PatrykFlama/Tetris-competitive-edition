@@ -1,9 +1,8 @@
 #include "block.h"
+#include "board.h"
 
 int main(int argc, char *argv[])
 {
-    // odpal menu i weź z niego tryb gry
-    // odpal game o trybie gry
-    int x = 0;
+    Board board;
     return 0;
 }
