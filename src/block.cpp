@@ -1,7 +1,6 @@
 #include "block.h"
-#include <vector>
 
-std::vector<std::vector<std::vector<bool>>> blockMatrices =
+const std::vector<std::vector<bool>> blockMatrices[BLOCK_TYPES_COUNT] =
     {
         {// I
          {0, 0, 1, 0},
@@ -41,9 +40,9 @@ std::vector<std::vector<std::vector<bool>>> blockMatrices =
 
 };
 
-unsigned int blockSizes[7] = {4, 3, 3, 2, 3, 3, 3};
+unsigned int blockSizes[BLOCK_TYPES_COUNT] = {4, 3, 3, 2, 3, 3, 3};
 
-Block::Block(BlockType _type = I) : type(_type), size(blockSizes[type]), blockMatrix(blockMatrices[type]) {}
+Block::Block(BlockType _type) : type(_type), size(blockSizes[type]), blockMatrix(blockMatrices[type]) {}
 
 BlockType Block::getType() const { return type; }
 std::vector<std::vector<bool>> Block::getMatrix() const { return blockMatrix; }

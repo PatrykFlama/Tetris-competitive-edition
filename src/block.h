@@ -3,6 +3,8 @@
 
 #include <vector>
 
+const unsigned int BLOCK_TYPES_COUNT = 7;
+
 enum BlockType
 {
     I,
@@ -27,7 +29,7 @@ class Block
     std::vector<std::vector<bool>> blockMatrix;
 
 public:
-    Block(BlockType _type);
+    Block(BlockType _type = I);
     BlockType getType() const;
     std::vector<std::vector<bool>> getMatrix() const;
     void rotate(RotationDirection rotationDirection);
