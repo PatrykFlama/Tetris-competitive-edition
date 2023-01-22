@@ -1,5 +1,5 @@
-# Tetris comptetitive edition
-Tetris game with competetive gamemode!
+# Tetris competitive edition
+Tetris game with competitive gamemode!
 
 ## Tetrominos
 ![image](README_files/tetrominos.png)
