@@ -1,104 +1,122 @@
 #include "gameplay.h"
 
-Gameplay::Gameplay(Player _player) : Gameplay(_player, standardHEIGHT, standardWIDTH) {}
-
-Gameplay::Gameplay(Player _player, uint boardHeight, uint boardWidth) :
-    player(_player),
-    board(boardHeight, boardWidth),
-    difficulty_level(0),
-    blocksQueuePointer(0),
-    isGameOver(false),
-    time(&difficulty_level)
+Gameplay::Gameplay(Player _player, unsigned int boardHeight, unsigned int boardWidth) : player(_player),
+                                                                                        board(boardHeight, boardWidth),
+                                                                                        blocksQueuePointer(0),
+                                                                                        difficultyLevel(0),
+                                                                                        isGameOver(false)
 {
-    for(uint i = 0; i < 2; i++)
-        for(uint type = 0; type < 7; type++){
-            BlockType block = static_cast<BlockType>(type);
-            blocksQueue.push_back(block);
+    for (unsigned int i = 0; i < 2; i++)
+        for (unsigned int type = 0; type < 7; type++)
+        {
+            BlockType blockType = static_cast<BlockType>(type);
+            blocksQueue.push_back(blockType);
         }
 }
 
-void Gameplay::redrawBlocks(){
+void Gameplay::redrawBlocks()
+{
     std::random_shuffle(blocksQueue.begin(), blocksQueue.end());
-    blocksQueuePointer = 13;
+    blocksQueuePointer = 0;
 }
 
-void Gameplay::spawnBlock(){
-    if(blocksQueuePointer < 0) redrawBlocks();
-    if(!board.attemptToAddeBlock(blocksQueue[blocksQueuePointer--])){
-        isGameOver = true;
-    }
+void Gameplay::spawnBlock()
+{
+    if (!board.attemptToAddNewBlock(blocksQueue[blocksQueuePointer++]))
+        onGameOver();
+    if (blocksQueuePointer >= blocksQueue.size())
+        redrawBlocks();
 }
 
-void Gameplay::onGameTick(){
-    if(!board.canMoveBlock(DOWN)){
-        board.setOnBoard();
-        uint lines_broken = board.fixBoard();
+void Gameplay::onGameTick()
+{
+    if (!board.canMoveBlock(DOWN))
+    {
+        board.attemptToSolidify();
+        unsigned int lines_broken = board.fixBoard();
         score.blockDropped(lines_broken, false);
         spawnBlock();
     }
 }
 
-void Gameplay::makePlayerMove(){
-    Move move = player.getInput();
+void Gameplay::makePlayerMove()
+{
+    Move move; //= player.getInput();
 
-    switch (move){
-        case MOVE_LEFT:
-            board.attemptToMoveBlock(LEFT);
-            break;
-        case MOVE_RIGHT:
-            board.attemptToMoveBlock(RIGHT);
-            break;
-        case SLOW_DOWN:
-            board.attemptToMoveBlock(DOWN);
-            break;
-        case FAST_DOWN:
-            while(board.attemptToMoveBlock(DOWN)){}
-            board.setOnBoard();
-            // ui update for pleasent visuals
-            uint lines_broken = board.fixBoard();
+    switch (move)
+    {
+    case MOVE_LEFT:
+        board.attemptToMoveActiveBlock(LEFT);
+        break;
+    case MOVE_RIGHT:
+        board.attemptToMoveActiveBlock(RIGHT);
+        break;
+    case SLOW_DOWN:
+        board.attemptToMoveActiveBlock(DOWN);
+        break;
+    case FAST_DOWN:
+        while (board.attemptToMoveActiveBlock(DOWN))
+            ;
+        board.attemptToSolidify();
+        {
+            unsigned int lines_broken = board.fixBoard();
             score.blockDropped(lines_broken, true);
-            break;
-        case ROTATE_COUNTERCLOCKWISE:
-            board.attemptToRotateBlock(COUNTERCLOCKWISE);
-            break;
-        case ROTATE_CLOCKWISE:
-            board.attemptToRotateBlock(CLOCKWISE);
-            break;
-        case TO_HOLDING_CELL:
-            board.storeBlock();// TODO - store active block and change it with stored one (if exists)
-            break;
-        
-        default:
-            break;
+        }
+        break;
+    case ROTATE_COUNTERCLOCKWISE:
+        board.attemptToRotateActiveBlock(COUNTERCLOCKWISE);
+        break;
+    case ROTATE_CLOCKWISE:
+        board.attemptToRotateActiveBlock(CLOCKWISE);
+        break;
+    case TO_HOLDING_CELL:
+        // board.storeBlock(); // TODO - store active block and change it with stored one (if exists)
+        break;
+
+    default:
+        break;
     }
 
-    if(move != NONE){} // TODO refresh UI
-}
-
-void Gameplay::changeDiffLevel(uint new_difficulty){
-    difficulty_level = new_difficulty;
-}
-
-void Gameplay::gameOver(){
-	
-}
-
-void Gameplay::gameLoop(){
-    makePlayerMove();
-    if(time.shouldBlockFall()) {
-        onGameTick();
-        if(gameOver) gameOver();
+    if (move != NONE)
+    {
     }
 }
 
-bool Gameplay::isLost() const{
+void Gameplay::setDifficultyLevel(unsigned int new_difficulty)
+{
+    difficultyLevel = new_difficulty;
+}
+
+void Gameplay::onGameOver()
+{
+    isGameOver = true;
+}
+
+void Gameplay::gameLoop()
+{
+}
+
+bool Gameplay::getGameOver() const
+{
     return isGameOver;
 }
 
-uint Gameplay::returnScore() const{
-    return score.returnScore();
+unsigned int Gameplay::getScore() const
+{
+    return score.getScore();
 }
 
-uint Gameplay::returnDiffLevel() const{
-    return difficulty_level;
+unsigned int Gameplay::getDifficultyLevel() const
+{
+    return difficultyLevel;
+}
+
+const BlockType &Gameplay::getNextBlockType() const
+{
+    return blocksQueue[blocksQueuePointer];
+}
+
+const Board &Gameplay::getBoard() const
+{
+    return board;
 }

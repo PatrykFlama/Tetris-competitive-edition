@@ -1,17 +1,15 @@
+#include "ui.h"
 
 #include <ncurses.h>
 #include <vector>
 #include <string>
+#include <cstring>
 
-#include "ui.h"
-#include "board.h"
-#include "block.h"
-
-UI::UI(){
+UI::UI()
+{
     initscr();
     noecho();
-    getmaxyx(stdscr, rows, columns );
-    //TODO obslozyc termnal bezkolorowy
+    getmaxyx(stdscr, rows, columns);
     start_color();
     init_pair(DEFAULT_COLOR, COLOR_WHITE, COLOR_BLACK);
     init_pair(MAIN_BORDER_COLOR, COLOR_RED, COLOR_BLACK);
@@ -19,94 +17,87 @@ UI::UI(){
     curs_set(0);
 }
 
-void UI::drawBorder() {
-    attron(COLOR_PAIR(MAIN_BORDER_COLOR));
-    for(int i = 0 ; i < rows ; i++) {
-        mvprintw(i, 0, verticalBorder);
-        mvprintw(i, columns - 1, verticalBorder);
-    }
-    for(int i = 0 ; i < columns ; i++) {
-        mvprintw(rows - 1, i, horizontalBorder);
-        mvprintw(0, i, horizontalBorder);
-    }
-    attroff(COLOR_PAIR(MAIN_BORDER_COLOR));
+UI::~UI()
+{
+    endwin();
+}
+
+void UI::printContents() const
+{
     refresh();
 }
 
-void UI::display(std::vector<std::vector<std::vector<bool>>> boards, uint score, Block nextBlock){
+void UI::drawString(std::string str, ScreenPosition position) const
+{
+    mvprintw(position.x, position.y, str.c_str());
+}
 
-    //ile score i next block ma byc od gornej lewej krawedzi
-    int OFFSETY = 2;
-    int OFFSETX = 4;
+void UI::drawBlock(const Block &block, ScreenPosition position) const
+{
+    auto matrix = block.getMatrix();
+    for (int x = 0; x < matrix.size(); ++x)
+        for (int y = 0; y < matrix[x].size(); ++y)
+            if (matrix[x][y])
+                mvprintw(position.x + x, position.y + y, "#");
+}
 
-   std::vector<std::vector<bool>>blockMatrix = nextBlock.getMatrix();
+void UI::drawBorder(ScreenPosition pos1, ScreenPosition pos2) const
+{
+    char verticalBorderString[2] = {VERTICAL_BORDER_CHAR, '\0'};
+    char horizontalBorderString[2] = {VERTICAL_BORDER_CHAR, '\0'};
 
-
-    drawBorder();
-
-    //rysowanie scora
-    char scoreString[] = "Score:";
-
-    char scoreInt[std::to_string(score).length() + 1]; 
-    strcpy(scoreInt, std::to_string(score).c_str());
-
-    mvprintw(OFFSETY, OFFSETX, scoreString);
-    mvprintw(OFFSETY, OFFSETX + sizeof(scoreString), scoreInt);
-
-
-    //rysowanie next block ramka
-    mvprintw(OFFSETY + 2, OFFSETX, "Next:");
-    attron(COLOR_PAIR(1));
-    mvprintw(OFFSETY + 3, OFFSETX, "==========");
-    for(int i = 0 ; i < 4 ; i++) {
-        mvprintw(OFFSETY + 4 + i, OFFSETX, "I        I");
+    for (unsigned int x = pos1.x; x < pos2.x; ++x)
+    {
+        mvprintw(x, pos1.y, verticalBorderString);
+        mvprintw(x, pos2.y - 1, verticalBorderString);
     }
-    mvprintw(OFFSETY + 8, OFFSETX, "==========");
+    for (unsigned int y = pos1.y; y < pos2.y; ++y)
+    {
+        mvprintw(pos1.x, y, horizontalBorderString);
+        mvprintw(pos2.x - 1, y, horizontalBorderString);
+    }
+}
+
+void UI::drawScreenBorder() const
+{
+    attron(COLOR_PAIR(MAIN_BORDER_COLOR));
+    drawBorder({0, 0}, {(int)rows, (int)columns});
+    attroff(COLOR_PAIR(MAIN_BORDER_COLOR));
+}
+
+void UI::drawGameplay(const Gameplay &gameplay, ScreenPosition position) const
+{
+
+    drawScreenBorder();
+    drawString("Score: " + std::to_string(gameplay.getScore()), position);
+
+    drawString("Next:", {position.x + 2, position.y});
+    attron(COLOR_PAIR(1));
+    drawBorder({position.x + 3, position.y}, {position.x + 3 + 6, position.y + 6});
     attroff(COLOR_PAIR(1));
 
-    //rysowanie next block zawartosc (czyli kloc)
-    attron( A_REVERSE );
-    for(int i = 0 ; i < 4; i++){
-        for(int j = 0; j < 4; j++){
-            if(blockMatrix[i][j]) {
-                mvprintw(OFFSETY + 4 +i, (OFFSETX + 1) +2*j, "  ");
-            }
-        }
-    }
-    attroff( A_REVERSE );
+    attron(A_REVERSE);
+    drawBlock(Block(gameplay.getNextBlockType()), {position.x + 4, position.y + 1});
+    attroff(A_REVERSE);
 
-    //rysowanie planszy 
-    //TODO 2 boardsy
-    int boardWidth = boards[0][0].size();
-    int boardHeight = boards[0].size();
-    int boardStartX = ((columns/2) - (boardWidth));
-    int boardStartY = rows - boardHeight - 2;
+    ScreenPosition boardPosition = {position.x + 10, position.y};
+    int boardHeight = gameplay.getBoard().getHeight();
+    int boardWidth = gameplay.getBoard().getWidth();
 
-    //ramka
     attron(COLOR_PAIR(2));
-    for(int i = -1 ; i < boardHeight+1 ; i++) {
-        mvprintw(boardStartY + i, boardStartX - 1, "I");
-        mvprintw(boardStartY + i, boardStartX + boardWidth*2 + 1, "I");
-    }
-    for(int i = -1 ; i < (boardWidth*2)+2 ; i++) {
-        mvprintw(boardStartY - 1, boardStartX + i, "=");
-        mvprintw(boardStartY + boardHeight, boardStartX + i, "=");
-    }
-    
+    drawBorder(boardPosition, {boardPosition.x + boardHeight + 2, boardPosition.y + boardWidth + 2});
     attroff(COLOR_PAIR(2));
 
-
-    //zawartosc planszy 
-    attron( A_REVERSE );
-
-    for(int i = 0 ; i < boardHeight; i++){
-        for(int j = 0; j < boardWidth; j++){
-            if(boards[0][i][j]) {
-                mvprintw(boardStartY + i, boardStartX + 2*j, "  ");
+    attron(A_REVERSE);
+    for (int x = 0; x < boardHeight; x++)
+    {
+        for (int y = 0; y < boardWidth; y++)
+        {
+            if (gameplay.getBoard().isCellFull({x, y}))
+            {
+                mvprintw(boardPosition.x + 1 + x, boardPosition.y + 1 + y, "#");
             }
         }
     }
-    
-    attroff( A_REVERSE );
-    refresh();
+    attroff(A_REVERSE);
 }

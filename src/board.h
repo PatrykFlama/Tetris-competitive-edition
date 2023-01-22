@@ -32,7 +32,7 @@ struct BoardPosition
 
 class Board
 {
-    const unsigned int HEIGHT, WIDTH;
+    unsigned int HEIGHT, WIDTH;
 
     BoardPosition startingPosition;
 
@@ -60,6 +60,12 @@ public:
 
     const BoardPosition &getActiveBlockPosition() const;
     const Block &getActiveBlock() const;
+
+    unsigned int getHeight() const;
+    unsigned int getWidth() const;
+
+    const std::vector<std::vector<bool>> getBoard() const;
+    const std::vector<std::vector<BlockType>> getBlockTypes() const;
 
     bool isPositionValid(BoardPosition position) const;
     bool attemptToSolidify();

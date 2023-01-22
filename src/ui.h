@@ -1,8 +1,9 @@
 #ifndef UI_H
 #define UI_H
 
+#include "gameplay.h"
 #include "block.h"
-#include "board.h"
+#include <string>
 #include <vector>
 
 enum ColorSet
@@ -12,20 +13,28 @@ enum ColorSet
     TETRIS_BORDER_COLOR
 };
 
+struct ScreenPosition
+{
+    int x, y;
+};
+
 class UI
 {
-    uint columns;
-    uint rows;
-    
-    std::vector<std::vector<std::vector<bool>>> blockMatrices;
-    const char verticalBorder[2] = "I";
-    const char horizontalBorder[2] = "=";
+    unsigned int columns;
+    unsigned int rows;
+
+    const static char VERTICAL_BORDER_CHAR = 'I';
+    const static char HORIZONTAL_BORDER_CHAR = '=';
+    void drawString(std::string str, ScreenPosition position) const;
+    void drawBlock(const Block &block, ScreenPosition position) const;
+    void drawBorder(ScreenPosition pos1, ScreenPosition pos2) const;
+    void drawScreenBorder() const;
 
 public:
     UI();
-    void display(std::vector<std::vector<std::vector<bool>>> boards, uint score, Block nextBlock);
-    //FIXME ma byc prywatna
-    void drawBorder();
+    ~UI();
+    void printContents() const;
+    void drawGameplay(const Gameplay &gameplay, ScreenPosition position = {2, 4}) const;
 };
 
 #endif
