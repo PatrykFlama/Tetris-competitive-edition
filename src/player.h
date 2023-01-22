@@ -1,3 +1,12 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
+enum PlayerType
+{
+    HUMAN,
+    BOT
+};
+
 enum Move
 {
     MOVE_LEFT,
@@ -10,4 +19,10 @@ enum Move
     NONE
 };
 
-// TODO
+class Player
+{
+public:
+    Player(PlayerType _playerType);
+};
+
+#endif

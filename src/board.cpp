@@ -17,6 +17,13 @@ Board::Board(unsigned int _HEIGHT, unsigned int _WIDTH) : HEIGHT(_HEIGHT), WIDTH
     hasActiveBlock = false;
 }
 
+const std::vector<std::vector<bool>> Board::getBoard() const {
+    return board;
+}
+const std::vector<std::vector<BlockType>> Board::getBlockTypes() const {
+    return blockTypes;
+}
+
 void Board::resizeBoard(unsigned int newHeight, unsigned int newWidth)
 {
     board.resize(newHeight);
@@ -30,9 +37,9 @@ void Board::resizeBoard(unsigned int newHeight, unsigned int newWidth)
 
 bool Board::isPositionValid(BoardPosition position) const
 {
-    if (position.row < 0 || position.row >= HEIGHT)
+    if (position.row < 0 || position.row >= (int)HEIGHT)
         return false;
-    if (position.col < 0 || position.col >= WIDTH)
+    if (position.col < 0 || position.col >= (int)WIDTH)
         return false;
     return true;
 }
@@ -52,6 +59,16 @@ const BoardPosition &Board::getActiveBlockPosition() const
 const Block &Board::getActiveBlock() const
 {
     return activeBlock;
+}
+
+unsigned int Board::getHeight() const
+{
+    return HEIGHT;
+}
+
+unsigned int Board::getWidth() const
+{
+    return WIDTH;
 }
 
 BlockType Board::getBlockTypeAt(BoardPosition position) const

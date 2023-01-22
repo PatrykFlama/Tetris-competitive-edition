@@ -1,14 +1,12 @@
 #ifndef SCORE_H
 #define SCORE_H
 
-typedef unsigned int uint;
-
 class Score
 {
-    uint score;     // total score
-    uint combo;      // line breaks in row combo counter
-    uint tetris_combo; // how many tetrises in row
-    uint *difficulty_level;
+    unsigned int score;     // total score
+    unsigned int combo;      // line breaks in row combo counter
+    unsigned int tetris_combo; // how many tetrises in row
+    unsigned int difficultyLevel;
     /*
     Level         Drop speed (frames/line)
      00            48 (0.8 s)
@@ -28,16 +26,16 @@ class Score
      29+            1 (0.02s)
     */
 
-    const uint hard_drop_points = 10;
-    const float difficulty_multiplier = 0.2;
-    const uint lines_points[4] = {100, 300, 500, 800};
-    const uint tetris_combo_points = 200;
+    unsigned int hard_drop_points = 10;
+    float difficulty_multiplier = 0.2;
+    unsigned int lines_points[4] = {100, 300, 500, 800};
+    unsigned int tetris_combo_points = 200;
 
 public:
-    Score(uint *_difficulty_level);
-
-    void blockDropped(uint lines_broken, bool if_hard_drop);    // function to be called upon block fall
-    uint returnScore() const;
+    Score(unsigned int _difficultyLevel = 0);
+    void changeDifficultyLevel(unsigned int _difficultyLevel);
+    void blockDropped(unsigned int lines_broken, bool if_hard_drop);    // function to be called upon block fall
+    unsigned int getScore() const;
 };
 
 #endif

@@ -1,30 +1,28 @@
-#ifndef GAME
-#define GAME
+#ifndef GAME_H
+#define GAME_H
 
 #include "gameplay.h"
 #include "player.h"
-#include "time.h"
 #include <vector>
 
 enum GameMode
 {
-    SinglePlayer,
-    HumanVsHuman,
-    HumanVsBot
+    SINGLE_PLAYER,
+    HUMAN_VS_HUMAN,
+    HUMAN_VS_BOT
 };
 
-class Game{
+class Game
+{
     GameMode gameMode;
     std::vector<Gameplay> gameplays;
-    std::vector<Player> players;
     void runSinglePlayer();
     void runHumanVsHuman();
     void runHumanVsBot();
 
-    public:
-    Game();
-    Game(GameMode gameMode);
-    bool gameLoop();        // runs in main while loop
+public:
+    Game(GameMode gameMode = SINGLE_PLAYER);
+    void gameLoop();
 };
 
 #endif
