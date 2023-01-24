@@ -1,7 +1,9 @@
+#include <bits/stdc++.h>
 #include "gameplay.h"
-#include "player.h"
-
 #include "game.h"
+#include "player.h"
+#include "time.h"
+
 #include "ui.h"
 
 #include <chrono>
@@ -9,7 +11,6 @@
 
 int main(int argc, char *argv[])
 {
-    Player p(HUMAN1);
     Game game(SINGLE_PLAYER);
     UI ui;
 
@@ -20,8 +21,8 @@ int main(int argc, char *argv[])
         ui.printContents();
     }   
 
-    Gameplay gameplay(p);
-    ui.drawGameplay(gameplay);
-    ui.printContents();
+   // Gameplay gameplay(p);
+   // ui.drawGameplay(gameplay);
+   // ui.printContents();
     return 0;
 }

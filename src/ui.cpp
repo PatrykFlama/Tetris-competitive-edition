@@ -24,7 +24,7 @@ void UI::printContents() const
 
 void UI::drawString(std::string str, ScreenPosition position) const
 {
-    mvprintw(position.x, position.y, str.c_str());
+    mvprintw(position.x, position.y, "%s", str.c_str());
 }
 
 void UI::drawBlock(const Block &block, ScreenPosition position) const
@@ -43,13 +43,13 @@ void UI::drawBorder(ScreenPosition pos1, ScreenPosition pos2) const
 
     for (unsigned int x = pos1.x; x < pos2.x; ++x)
     {
-        mvprintw(x, pos1.y, verticalBorderString);
-        mvprintw(x, pos2.y - 1, verticalBorderString);
+        mvprintw(x, pos1.y, "%s", verticalBorderString);
+        mvprintw(x, pos2.y - 1, "%s", verticalBorderString);
     }
     for (unsigned int y = pos1.y; y < pos2.y; ++y)
     {
-        mvprintw(pos1.x, y, horizontalBorderString);
-        mvprintw(pos2.x - 1, y, horizontalBorderString);
+        mvprintw(pos1.x, y, "%s", horizontalBorderString);
+        mvprintw(pos2.x - 1, y, "%s", horizontalBorderString);
     }
 }
 
