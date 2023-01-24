@@ -84,10 +84,6 @@ void Gameplay::makePlayerMove()
     default:
         break;
     }
-
-    if (move != NONE)
-    {
-    }
 }
 
 void Gameplay::setDifficultyLevel(unsigned int new_difficulty)

@@ -5,14 +5,14 @@ Game::Game(GameMode _gameMode) : gameMode(_gameMode)
     switch (gameMode)
     {
     case SINGLE_PLAYER:
-        gameplays.emplace_back(Player(HUMAN));
+        gameplays.emplace_back(Player(HUMAN1));
         break;
     case HUMAN_VS_HUMAN:
-        gameplays.emplace_back(Player(HUMAN));
-        gameplays.emplace_back(Player(HUMAN));
+        gameplays.emplace_back(Player(HUMAN1));
+        gameplays.emplace_back(Player(HUMAN2));
         break;
     case HUMAN_VS_BOT:
-        gameplays.emplace_back(Player(HUMAN));
+        gameplays.emplace_back(Player(HUMAN1));
         gameplays.emplace_back(Player(BOT));
         break;
     }
