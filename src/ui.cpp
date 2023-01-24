@@ -64,6 +64,7 @@ void UI::drawScreenBorder() const
 
 void UI::drawGameplay(const Gameplay &gameplay, ScreenPosition position) const
 {
+    clear();
 
     drawScreenBorder();
     drawString("Score: " + std::to_string(gameplay.getScore()), position);
