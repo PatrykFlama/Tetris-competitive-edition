@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    Player p(HUMAN);
+    Player p(HUMAN1);
     Gameplay gameplay(p);
     UI ui;
     ui.drawGameplay(gameplay);

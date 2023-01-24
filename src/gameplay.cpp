@@ -5,7 +5,8 @@ Gameplay::Gameplay(Player _player, unsigned int boardHeight, unsigned int boardW
                                                                                         blocksQueuePointer(0),
                                                                                         difficultyLevel(0),
                                                                                         isGameOver(false),
-                                                                                        isStoredBlock(false)
+                                                                                        isStoredBlock(false),
+                                                                                        time(&difficultyLevel)
 {
     for (unsigned int i = 0; i < 2; i++)
         for (unsigned int type = 0; type < 7; type++)
@@ -80,9 +81,6 @@ void Gameplay::makePlayerMove()
         }
         storedBlock = activeBlock;
         break;
-
-    default:
-        break;
     }
 }
 
@@ -98,6 +96,8 @@ void Gameplay::onGameOver()
 
 void Gameplay::gameLoop()
 {
+    makePlayerMove();
+    if(time.shouldBlockFall()) onGameTick();
 }
 
 bool Gameplay::getGameOver() const

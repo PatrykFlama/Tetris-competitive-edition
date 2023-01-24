@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <ncurses.h>
+
 enum PlayerType
 {
     HUMAN1,

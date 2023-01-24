@@ -5,6 +5,7 @@
 #include <array>
 #include <vector>
 #include <exception>
+#include <bits/stdc++.h>
 
 enum MoveDirection
 {

@@ -75,5 +75,6 @@ Move Player::getMove(){
         }
     } else{         // bot
         // TODO return bot input
+        return NONE;
     }
 }

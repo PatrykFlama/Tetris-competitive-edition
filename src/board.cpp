@@ -73,23 +73,26 @@ unsigned int Board::getWidth() const
 
 BlockType Board::getBlockTypeAt(BoardPosition position) const
 {
-    if (!isPositionValid(position))
+    if (!isPositionValid(position)){
         throw std::invalid_argument("Received invalid position");
+    }
     return blockTypes[position.row][position.col];
 }
 
 void Board::clearPosition(BoardPosition position)
 {
-    if (!isPositionValid(position))
+    if (!isPositionValid(position)){
         throw std::invalid_argument("Received invalid position");
+    }
     board[position.row][position.col] = false;
     blockTypes[position.row][position.col] = BlockType(0);
 }
 
 void Board::clearRow(unsigned int row)
 {
-    if (row >= HEIGHT)
+    if (row >= HEIGHT){
         throw std::invalid_argument("Received invalid row");
+    }
     for (unsigned int col = 0; col < WIDTH; ++col)
         clearPosition(BoardPosition(row, col));
 }
@@ -102,22 +105,25 @@ void Board::clearBoard()
 
 bool Board::isCellFree(BoardPosition position) const
 {
-    if (!isPositionValid(position))
+    if (!isPositionValid(position)){
         throw std::invalid_argument("Received invalid position");
+    }
     return !board[position.row][position.col];
 }
 
 bool Board::isCellFull(BoardPosition position) const
 {
-    if (!isPositionValid(position))
+    if (!isPositionValid(position)){
         throw std::invalid_argument("Received invalid position");
+    }
     return board[position.row][position.col];
 }
 
 bool Board::isRowFree(unsigned int row) const
 {
-    if (row >= HEIGHT)
+    if (row >= HEIGHT){
         throw std::invalid_argument("Received invalid row");
+    }
     for (unsigned int col = 0; col < WIDTH; ++col)
         if (!isCellFree(BoardPosition(row, col)))
             return false;
@@ -127,8 +133,9 @@ bool Board::isRowFree(unsigned int row) const
 
 bool Board::isRowFull(unsigned int row) const
 {
-    if (row >= HEIGHT)
+    if (row >= HEIGHT){
         throw std::invalid_argument("Received invalid row");
+    }
     for (unsigned int col = 0; col < WIDTH; ++col)
         if (isCellFree(BoardPosition(row, col)))
             return false;
@@ -138,15 +145,16 @@ bool Board::isRowFull(unsigned int row) const
 
 bool Board::doesNotCollideWithBoard(Block newBlock, BoardPosition newPosition) const
 {
-    if (!isPositionValid(newPosition))
+    if (!isPositionValid(newPosition)){
         throw std::invalid_argument("Received invalid position");
-    auto blockMatrix = newBlock.getMatrix();
+    }
+    // std::vector<std::vector<bool> > blockMatrix = newBlock.getMatrix();
 
-    for (unsigned int row = 0; row < blockMatrix.size(); ++row)
+    for (unsigned int row = 0; row < newBlock.getMatrix().size(); ++row)
     {
-        for (unsigned int col = 0; col < blockMatrix[row].size(); ++col)
+        for (unsigned int col = 0; col < newBlock.getMatrix()[row].size(); ++col)
         {
-            if (!blockMatrix[row][col])
+            if (!newBlock.getMatrix()[row][col])
                 continue;
 
             BoardPosition actualPosition(newPosition.row + row, newPosition.col + col);
@@ -211,8 +219,9 @@ bool Board::attemptToRotateActiveBlock(RotationDirection direction)
 
 void Board::dropRow(unsigned int row) // spuszczanie wiersza niżej jeśli pod nim jest pusto
 {
-    if (row >= HEIGHT - 1)
+    if (row >= HEIGHT - 1){
         throw std::invalid_argument("Received invalid row");
+    }
 
     if (!isRowFree(row + 1))
         return;
@@ -228,8 +237,9 @@ void Board::dropRow(unsigned int row) // spuszczanie wiersza niżej jeśli pod n
 
 void Board::removeRow(unsigned int row)
 {
-    if (row >= HEIGHT)
+    if (row >= HEIGHT){
         throw std::invalid_argument("Received invalid row");
+    }
 
     clearRow(row);
 

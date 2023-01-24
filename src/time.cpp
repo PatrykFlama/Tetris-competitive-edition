@@ -34,8 +34,8 @@ uint Time::convertTime(milliseconds T) {
 	return convertedT;
 }
 
-Time::Time(uint *_difficulty_level, uint _framerate, milliseconds _game_start_delay) : framerate(_framerate), time_start(getSystemTime()), game_start_delay(_game_start_delay), difficulty_level(_difficulty_level){
-	last_block_movement = (getSystemTime() + convertTime(_game_start_delay)) % M;
+Time::Time(uint *_difficulty_level) : time_start(getSystemTime()), difficulty_level(_difficulty_level){
+	last_block_movement = (getSystemTime()) % M;
 	block_drop_speed.resize(30);
 	block_drop_speed[0] = 800ms, block_drop_speed[1] = 720ms, block_drop_speed[2] = 630ms, block_drop_speed[3] = 550ms, block_drop_speed[4] = 470ms, 
 	block_drop_speed[5] = 380ms, block_drop_speed[6] = 300ms, block_drop_speed[7] = 220ms, block_drop_speed[8] = 130ms, block_drop_speed[9] = 100ms,

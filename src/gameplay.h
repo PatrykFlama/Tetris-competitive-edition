@@ -14,6 +14,7 @@ class Gameplay
 {
     Player player;
     Board board;
+    Time time;
     Score score;
     bool isStoredBlock;
     BlockType storedBlock;
