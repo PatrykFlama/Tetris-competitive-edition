@@ -1,10 +1,5 @@
 #include "ui.h"
 
-#include <ncurses.h>
-#include <vector>
-#include <string>
-#include <cstring>
-
 UI::UI()
 {
     initscr();
@@ -100,4 +95,10 @@ void UI::drawGameplay(const Gameplay &gameplay, ScreenPosition position) const
         }
     }
     attroff(A_REVERSE);
+}
+
+void UI::drawGame(Game &game) {
+    for (int i = 0; i < game.gameplays.size(); i ++){
+        drawGameplay(game.gameplays[i], {2, 4+i*30});
+    }
 }

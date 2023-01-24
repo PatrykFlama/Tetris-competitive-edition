@@ -20,13 +20,14 @@ Game::Game(GameMode _gameMode) : gameMode(_gameMode)
 
 void Game::gameLoop()
 {
-    bool global_game_over = false;
-    while(!global_game_over){
-        for (unsigned int i = 0; i < gameplays.size(); i++){
-            gameplays[i].gameLoop();
-        }
-        for (unsigned int i = 0; i < gameplays.size(); i++){
-            if(gameplays[i].getGameOver()) global_game_over = true;
-        }
-    }   
+    for (unsigned int i = 0; i < gameplays.size(); i++){
+        gameplays[i].gameLoop();
+    }
+}
+
+bool Game::checkForGameOver(){
+    for (unsigned int i = 0; i < gameplays.size(); i++){
+        if(gameplays[i].getGameOver()) return true;
+    }
+    return false;
 }

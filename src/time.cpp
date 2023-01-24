@@ -48,8 +48,10 @@ uint Time::getLastBlockMovement() {
 	return last_block_movement;
 }
 
-uint Time::getDropSpeed() {
-	if (*difficulty_level > 29) return convertTime(block_drop_speed[29]);
+uint Time::getDropSpeed()
+{
+	if (*difficulty_level > 29)
+		return convertTime(block_drop_speed[29]);
 	return convertTime(block_drop_speed[*difficulty_level]);
 }
 

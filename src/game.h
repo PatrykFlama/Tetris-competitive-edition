@@ -15,14 +15,15 @@ enum GameMode
 class Game
 {
     GameMode gameMode;
-    std::vector<Gameplay> gameplays;
     void runSinglePlayer();
     void runHumanVsHuman();
     void runHumanVsBot();
 
 public:
     Game(GameMode gameMode = SINGLE_PLAYER);
+    std::vector<Gameplay> gameplays;
     void gameLoop();
+    bool checkForGameOver();
 };
 
 #endif
