@@ -11,7 +11,7 @@ UI::UI()
     init_pair(TETRIS_BORDER_COLOR, COLOR_YELLOW, COLOR_BLACK);
     curs_set(0);
     keypad(stdscr, TRUE);
-    timeout(50);
+    timeout(100);
     cbreak();
     noecho();
 }

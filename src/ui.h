@@ -39,6 +39,7 @@
 #define getmaxyx(...)
 #define mvprintw(...)
 #define timeout(...)
+#define cbreak()
 #endif
 
 enum ColorSet
