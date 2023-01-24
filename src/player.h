@@ -3,7 +3,8 @@
 
 enum PlayerType
 {
-    HUMAN,
+    HUMAN1,
+    HUMAN2,
     BOT
 };
 
@@ -21,8 +22,10 @@ enum Move
 
 class Player
 {
+    PlayerType player_type;   // 1, 2, b
 public:
     Player(PlayerType _playerType);
+    Move getMove();
 };
 
 #endif

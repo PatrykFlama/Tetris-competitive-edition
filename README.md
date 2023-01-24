@@ -1,14 +1,14 @@
 # Tetris competitive edition
 Tetris game with competitive gamemode!
 
+## How to run
+Compile with _make main_. Tested on Linux Ubuntu 20.04.5 LTS.
+
 ## Tetrominos
 ![image](README_files/tetrominos.png)
 
 ## Blocks rotation
 ![image](README_files/rotation_origin.png)
-
-## Work management
-[Project page](https://tetris-competetive-edition.atlassian.net)
 
 ## Conventions
 ### Commits
