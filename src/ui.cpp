@@ -10,6 +10,8 @@ UI::UI()
     init_pair(MAIN_BORDER_COLOR, COLOR_RED, COLOR_BLACK);
     init_pair(TETRIS_BORDER_COLOR, COLOR_YELLOW, COLOR_BLACK);
     curs_set(0);
+    keypad(stdscr, TRUE);
+    timeout(-1);
 }
 
 UI::~UI()

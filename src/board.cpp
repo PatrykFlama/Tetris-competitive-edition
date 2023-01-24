@@ -146,7 +146,8 @@ bool Board::isRowFull(unsigned int row) const
 bool Board::doesNotCollideWithBoard(Block newBlock, BoardPosition newPosition) const
 {
     if (!isPositionValid(newPosition)){
-        throw std::invalid_argument("Received invalid position");
+        //throw std::invalid_argument("Received invalid position");
+        return false;
     }
     // std::vector<std::vector<bool> > blockMatrix = newBlock.getMatrix();
 

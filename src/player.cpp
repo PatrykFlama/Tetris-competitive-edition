@@ -1,8 +1,6 @@
 #include "player.h"
 
-Player::Player(PlayerType _playerType) : player_type(_playerType) {
-    keypad(stdscr, TRUE);
-}
+Player::Player(PlayerType _playerType) : player_type(_playerType) {}
 
 Move Player::getMove(){
     int key = getch();

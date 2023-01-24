@@ -14,8 +14,9 @@ int main(int argc, char *argv[])
     Game game(SINGLE_PLAYER);
     UI ui;
 
+    ui.drawGame(game);
+    ui.printContents();
 
-    bool global_game_over = false;
     while(!game.checkForGameOver()){        
         game.gameL();
         ui.drawGame(game);
