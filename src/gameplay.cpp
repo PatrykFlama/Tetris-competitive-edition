@@ -4,7 +4,8 @@ Gameplay::Gameplay(Player _player, unsigned int boardHeight, unsigned int boardW
                                                                                         board(boardHeight, boardWidth),
                                                                                         blocksQueuePointer(0),
                                                                                         difficultyLevel(0),
-                                                                                        isGameOver(false)
+                                                                                        isGameOver(false),
+                                                                                        isStoredBlock(false)
 {
     for (unsigned int i = 0; i < 2; i++)
         for (unsigned int type = 0; type < 7; type++)
@@ -41,7 +42,7 @@ void Gameplay::onGameTick()
 
 void Gameplay::makePlayerMove()
 {
-    Move move; //= player.getInput();
+    Move move = player.getMove();
 
     switch (move)
     {
@@ -55,8 +56,7 @@ void Gameplay::makePlayerMove()
         board.attemptToMoveActiveBlock(DOWN);
         break;
     case FAST_DOWN:
-        while (board.attemptToMoveActiveBlock(DOWN))
-            ;
+        while (board.attemptToMoveActiveBlock(DOWN));
         board.attemptToSolidify();
         {
             unsigned int lines_broken = board.fixBoard();
@@ -70,7 +70,15 @@ void Gameplay::makePlayerMove()
         board.attemptToRotateActiveBlock(CLOCKWISE);
         break;
     case TO_HOLDING_CELL:
-        // board.storeBlock(); // TODO - store active block and change it with stored one (if exists)
+        BlockType activeBlock = board.getActiveBlock().getType();
+        if(isStoredBlock) board.setNewBlock(storedBlock);
+        else{
+            isStoredBlock = true;
+            board.setNewBlock(blocksQueue[blocksQueuePointer++]);
+            if (blocksQueuePointer >= blocksQueue.size())
+                redrawBlocks();
+        }
+        storedBlock = activeBlock;
         break;
 
     default:

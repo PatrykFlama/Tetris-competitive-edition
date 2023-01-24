@@ -45,7 +45,6 @@ class Board
     Block activeBlock;
     BoardPosition activeBlockPosition;
 
-    void setNewBlock(BlockType type);
 
     void clearPosition(BoardPosition position);
     void clearRow(unsigned int row);
@@ -58,6 +57,7 @@ public:
 
     void tick(); // TODO
 
+    void setNewBlock(BlockType type);
     const BoardPosition &getActiveBlockPosition() const;
     const Block &getActiveBlock() const;
 

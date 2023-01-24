@@ -15,6 +15,8 @@ class Gameplay
     Player player;
     Board board;
     Score score;
+    bool isStoredBlock;
+    BlockType storedBlock;
     // Time time;
     std::vector<BlockType> blocksQueue;
     unsigned int blocksQueuePointer;
