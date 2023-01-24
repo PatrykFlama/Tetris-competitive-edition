@@ -2,7 +2,8 @@
 Tetris game with competitive gamemode!
 
 ## How to run
-Compile with _make main_. Tested on Linux Ubuntu 20.04.5 LTS.
+Compile with _make main_. Tested on Linux Ubuntu 20.04.5 LTS.\
+Standard libraries and ncurses mandatory.
 
 ## Tetrominos
 ![image](README_files/tetrominos.png)
