@@ -22,7 +22,7 @@ class Game
 public:
     Game(GameMode gameMode = SINGLE_PLAYER);
     std::vector<Gameplay> gameplays;
-    void gameLoop();
+    void gameL();
     bool checkForGameOver();
 };
 

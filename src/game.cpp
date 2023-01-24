@@ -18,7 +18,7 @@ Game::Game(GameMode _gameMode) : gameMode(_gameMode)
     }
 }
 
-void Game::gameLoop()
+void Game::gameL()
 {
     for (unsigned int i = 0; i < gameplays.size(); i++){
         gameplays[i].gameLoop();

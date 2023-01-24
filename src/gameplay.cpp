@@ -34,6 +34,7 @@ void Gameplay::onGameTick()
 {
     if (!board.canMoveBlock(DOWN))
     {
+        printf("Can move block\n");
         board.attemptToSolidify();
         unsigned int lines_broken = board.fixBoard();
         score.blockDropped(lines_broken, false);
