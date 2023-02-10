@@ -80,6 +80,8 @@ void UI::drawGameplay(const Gameplay &gameplay, ScreenPosition position) const
     drawBlock(Block(gameplay.getNextBlockType()), {position.x + 4, position.y + 1});
     attroff(A_REVERSE);
 
+    drawBlock(gameplay.getBoard().activeBlock, ScreenPosition({gameplay.getBoard().activeBlockPosition.row+position.y+9, gameplay.getBoard().activeBlockPosition.col+position.x+3}));
+
     ScreenPosition boardPosition = {position.x + 10, position.y};
     int boardHeight = gameplay.getBoard().getHeight();
     int boardWidth = gameplay.getBoard().getWidth();

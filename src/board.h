@@ -43,8 +43,6 @@ class Board
     void resizeBoard(unsigned int newHeight, unsigned int newWidth);
 
     bool hasActiveBlock;
-    Block activeBlock;
-    BoardPosition activeBlockPosition;
 
 
     void clearPosition(BoardPosition position);
@@ -55,6 +53,8 @@ class Board
 
 public:
     Board(unsigned int _HEIGHT = DEFAULT_BOARD_HEIGHT, unsigned int _WIDTH = DEFAULT_BOARD_WIDTH);
+    Block activeBlock;
+    BoardPosition activeBlockPosition;
 
     void tick(); // TODO
 
