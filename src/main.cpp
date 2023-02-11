@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-    Game game(SINGLE_PLAYER);
+    Game game(HUMAN_VS_HUMAN);
     UI ui;
 
     ui.drawGame(game);
@@ -25,3 +25,13 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+/* 
+TODO LIST / KNOWN ISUUES
+* block can be transfered to holding cell inf times
+* block collision problems
+* sometimes global buffer overflow happens (but just sometimes, so its OK)
+* UI could look better
+* multiplayer doesn't work
+* lack of story mode
+*/
