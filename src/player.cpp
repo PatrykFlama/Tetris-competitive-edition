@@ -57,13 +57,13 @@ Move Player::getMove(){
             case KEY_UP:
                 return FAST_DOWN;
                 break;
-            case '/':
+            case ',':       // <
                 return ROTATE_COUNTERCLOCKWISE;
                 break;
-            case ',':       // <
+            case '.':       // >
                 return ROTATE_CLOCKWISE;
                 break;
-            case '.':       // >
+            case '/':
                 return TO_HOLDING_CELL;
                 break;
             
