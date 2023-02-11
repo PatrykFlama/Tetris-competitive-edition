@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         if(game.gameLoop()){
             ui.drawGame(game);
         }
-    }   
+    }
 
     return 0;
 }

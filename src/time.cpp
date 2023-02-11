@@ -44,9 +44,6 @@ Time::Time(uint *_difficulty_level) : time_start(getSystemTime()), difficulty_le
 	for (uint level = 19; level <= 29; level ++) block_drop_speed[level] = 30ms;
 }
 
-uint Time::getLastBlockMovement() {
-	return last_block_movement;
-}
 
 uint Time::getDropSpeed()
 {
@@ -57,7 +54,8 @@ uint Time::getDropSpeed()
 
 bool Time::shouldBlockFall() {
 	if (getSystemTime() - last_block_movement >= getDropSpeed()) {
-		last_block_movement = getSystemTime();
+		// last_block_movement = getSystemTime();
+		last_block_movement += getDropSpeed();
 		return true;
 	}
 	return false;

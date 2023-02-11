@@ -14,9 +14,7 @@ private:
     uint *difficulty_level;
     std::vector<milliseconds> block_drop_speed;
     uint getSystemTime();
-    uint getLastDropTime();
     uint getDropSpeed();
-    uint getLastBlockMovement();
     
 public:
     Time(uint *_difficulty_level);

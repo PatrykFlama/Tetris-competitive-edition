@@ -32,7 +32,7 @@ void Gameplay::spawnBlock()
 
 void Gameplay::onGameTick()
 {
-    if (!board.canMoveBlock(DOWN))
+    if (!board.attemptToMoveActiveBlock(DOWN))
     {
         board.attemptToSolidify();
         unsigned int lines_broken = board.fixBoard();
@@ -107,7 +107,7 @@ bool Gameplay::gameLoop()
     bool ui_updated = makePlayerMove();
     if(time.shouldBlockFall()){
         onGameTick();
-        return ui_updated;
+        ui_updated = true;
     }
     return ui_updated;
 }

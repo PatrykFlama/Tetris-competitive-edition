@@ -5,7 +5,7 @@
 #include <array>
 #include <vector>
 #include <exception>
-#include <bits/stdc++.h>
+#include <bits/stdc++.h>        // in theory - temporary
 
 enum MoveDirection
 {
@@ -43,7 +43,6 @@ class Board
     void resizeBoard(unsigned int newHeight, unsigned int newWidth);
 
     bool hasActiveBlock;
-
 
     void clearPosition(BoardPosition position);
     void clearRow(unsigned int row);
