@@ -108,4 +108,5 @@ void UI::drawGame(Game &game) {
     for (int i = 0; i < game.gameplays.size(); i ++){
         drawGameplay(game.gameplays[i], {2, 4+i*30});
     }
+    printContents();
 }

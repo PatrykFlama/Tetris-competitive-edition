@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
     ui.printContents();
 
     while(!game.checkForGameOver()){        
-        game.gameL();
-        ui.drawGame(game);
-        ui.printContents();
+        if(game.gameLoop()){
+            ui.drawGame(game);
+        }
     }   
 
     return 0;

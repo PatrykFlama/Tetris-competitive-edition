@@ -1,6 +1,6 @@
 #include "board.h"
 #include "block.h"
-
+#include "ncurses.h"
 BoardPosition::BoardPosition(int _row, int _col) : row(_row), col(_col) {}
 
 void BoardPosition::move(MoveDirection direction)
@@ -159,8 +159,9 @@ bool Board::doesNotCollideWithBoard(Block newBlock, BoardPosition newPosition) c
                 continue;
 
             BoardPosition actualPosition(newPosition.row + row, newPosition.col + col);
-            if (!isPositionValid(actualPosition) || !isCellFree(actualPosition))
+            if (!isPositionValid(actualPosition) || !isCellFree(actualPosition)){
                 return false;
+            }
         }
     }
 

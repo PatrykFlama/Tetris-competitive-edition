@@ -18,11 +18,13 @@ Game::Game(GameMode _gameMode) : gameMode(_gameMode)
     }
 }
 
-void Game::gameL()
+bool Game::gameLoop()
 {
+    bool ui_updated = false;
     for (unsigned int i = 0; i < gameplays.size(); i++){
-        gameplays[i].gameLoop();
+        ui_updated = ui_updated || gameplays[i].gameLoop();
     }
+    return ui_updated;
 }
 
 bool Game::checkForGameOver(){

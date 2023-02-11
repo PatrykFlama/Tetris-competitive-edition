@@ -28,13 +28,13 @@ Move Player::getMove(){
             case 'w':
                 return FAST_DOWN;
                 break;
-            case 'c':
+            case 'q':
                 return ROTATE_COUNTERCLOCKWISE;
                 break;
-            case 'q':
+            case 'e':
                 return ROTATE_CLOCKWISE;
                 break;
-            case 'e':
+            case 'c':
                 return TO_HOLDING_CELL;
                 break;
             

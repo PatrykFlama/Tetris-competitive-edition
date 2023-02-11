@@ -41,47 +41,55 @@ void Gameplay::onGameTick()
     }
 }
 
-void Gameplay::makePlayerMove()
+bool Gameplay::makePlayerMove()
 {
     Move move = player.getMove();
+    bool move_made = true;
 
     switch (move)
     {
-    case MOVE_LEFT:
-        board.attemptToMoveActiveBlock(LEFT);
-        break;
-    case MOVE_RIGHT:
-        board.attemptToMoveActiveBlock(RIGHT);
-        break;
-    case SLOW_DOWN:
-        board.attemptToMoveActiveBlock(DOWN);
-        break;
-    case FAST_DOWN:
-        while (board.attemptToMoveActiveBlock(DOWN));
-        board.attemptToSolidify();
-        {
-            unsigned int lines_broken = board.fixBoard();
-            score.blockDropped(lines_broken, true);
-        }
-        break;
-    case ROTATE_COUNTERCLOCKWISE:
-        board.attemptToRotateActiveBlock(COUNTERCLOCKWISE);
-        break;
-    case ROTATE_CLOCKWISE:
-        board.attemptToRotateActiveBlock(CLOCKWISE);
-        break;
-    case TO_HOLDING_CELL:
-        BlockType activeBlock = board.getActiveBlock().getType();
-        if(isStoredBlock) board.setNewBlock(storedBlock);
-        else{
-            isStoredBlock = true;
-            board.setNewBlock(blocksQueue[blocksQueuePointer++]);
-            if (blocksQueuePointer >= blocksQueue.size())
-                redrawBlocks();
-        }
-        storedBlock = activeBlock;
-        break;
+        case MOVE_LEFT:
+            board.attemptToMoveActiveBlock(LEFT);
+            break;
+        case MOVE_RIGHT:
+            board.attemptToMoveActiveBlock(RIGHT);
+            break;
+        case SLOW_DOWN:
+            board.attemptToMoveActiveBlock(DOWN);
+            break;
+        case FAST_DOWN:
+            while (board.attemptToMoveActiveBlock(DOWN));
+            board.attemptToSolidify();
+            {
+                unsigned int lines_broken = board.fixBoard();
+                score.blockDropped(lines_broken, true);
+            }
+            break;
+        case ROTATE_COUNTERCLOCKWISE:
+            board.attemptToRotateActiveBlock(COUNTERCLOCKWISE);
+            break;
+        case ROTATE_CLOCKWISE:
+            board.attemptToRotateActiveBlock(CLOCKWISE);
+            break;
+        case TO_HOLDING_CELL:
+            {
+                BlockType activeBlock = board.getActiveBlock().getType();
+                if(isStoredBlock) board.setNewBlock(storedBlock);
+                else{
+                    isStoredBlock = true;
+                    board.setNewBlock(blocksQueue[blocksQueuePointer++]);
+                    if (blocksQueuePointer >= blocksQueue.size())
+                        redrawBlocks();
+                }
+                storedBlock = activeBlock;
+                break;
+            }
+        case NONE:
+            move_made = false;
+            break;
     }
+
+    return move_made;
 }
 
 void Gameplay::setDifficultyLevel(unsigned int new_difficulty)
@@ -94,10 +102,14 @@ void Gameplay::onGameOver()
     isGameOver = true;
 }
 
-void Gameplay::gameLoop()
+bool Gameplay::gameLoop()
 {
-    makePlayerMove();
-    if(time.shouldBlockFall()) onGameTick();
+    bool ui_updated = makePlayerMove();
+    if(time.shouldBlockFall()){
+        onGameTick();
+        return ui_updated;
+    }
+    return ui_updated;
 }
 
 bool Gameplay::getGameOver() const

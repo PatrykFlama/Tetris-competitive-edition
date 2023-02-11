@@ -26,7 +26,7 @@ class Gameplay
 
     void redrawBlocks();
     void spawnBlock();
-    void makePlayerMove();
+    bool makePlayerMove();
     void onGameTick();
     void onGameOver();
     void setDifficultyLevel(unsigned int newDifficultyLevel);
@@ -34,7 +34,7 @@ class Gameplay
 public:
     Gameplay(Player _player, unsigned int boardHeight = DEFAULT_BOARD_HEIGHT, unsigned int boardWidth = DEFAULT_BOARD_WIDTH);
 
-    void gameLoop();
+    bool gameLoop();        // return true if ui should be updated (action happened)
     bool getGameOver() const;
     unsigned int getScore() const;
     unsigned int getDifficultyLevel() const;
