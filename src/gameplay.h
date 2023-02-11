@@ -16,8 +16,7 @@ class Gameplay
     Board board;
     Time time;
     Score score;
-    bool isStoredBlock;
-    BlockType storedBlock;
+    BlockType holdingCell;
     std::vector<BlockType> blocksQueue;
     unsigned int blocksQueuePointer;
 
@@ -40,6 +39,7 @@ public:
     unsigned int getDifficultyLevel() const;
 
     const BlockType &getNextBlockType() const;
+    const BlockType getHoldingCellBlockType() const;
     const Board &getBoard() const;
 };
 

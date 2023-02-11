@@ -3,7 +3,7 @@
 
 #include <vector>
 
-const unsigned int BLOCK_TYPES_COUNT = 7;
+const unsigned int BLOCK_TYPES_COUNT = 7+1;
 
 enum BlockType
 {
@@ -13,7 +13,8 @@ enum BlockType
     O,
     S,
     Z,
-    T
+    T,
+    NO_BLOCK
 };
 
 enum RotationDirection

@@ -71,6 +71,7 @@ void UI::drawGameplay(const Gameplay &gameplay, ScreenPosition position) const
     drawScreenBorder();
     drawString("Score: " + std::to_string(gameplay.getScore()), position);
 
+    // --- draw next block ---
     drawString("Next:", {position.x + 2, position.y});
     attron(COLOR_PAIR(1));
     drawBorder({position.x + 3, position.y}, {position.x + 3 + 6, position.y + 6});
@@ -80,6 +81,19 @@ void UI::drawGameplay(const Gameplay &gameplay, ScreenPosition position) const
     drawBlock(Block(gameplay.getNextBlockType()), {position.x + 4, position.y + 1});
     attroff(A_REVERSE);
 
+    // --- draw holding cell ---
+    drawString("Hold:", {position.x + 2, position.y + 7});
+    attron(COLOR_PAIR(1));
+    drawBorder({position.x + 3, position.y + 7}, {position.x + 3 + 6, position.y + 7 + 6});
+    attroff(COLOR_PAIR(1));
+
+    attron(A_REVERSE);
+    drawBlock(Block(gameplay.getHoldingCellBlockType()), {position.x + 4, position.y + 1 + 7});
+    attroff(A_REVERSE);
+
+
+
+    // --- draw active block ---
     drawBlock(gameplay.getBoard().activeBlock, ScreenPosition({gameplay.getBoard().activeBlockPosition.row+position.y+9, gameplay.getBoard().activeBlockPosition.col+position.x+3}));
 
     ScreenPosition boardPosition = {position.x + 10, position.y};

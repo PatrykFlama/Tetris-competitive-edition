@@ -5,8 +5,8 @@ Gameplay::Gameplay(Player _player, unsigned int boardHeight, unsigned int boardW
                                                                                         blocksQueuePointer(0),
                                                                                         difficultyLevel(0),
                                                                                         isGameOver(false),
-                                                                                        isStoredBlock(false),
-                                                                                        time(&difficultyLevel)
+                                                                                        time(&difficultyLevel),
+                                                                                        holdingCell(NO_BLOCK)
 {
     for (unsigned int i = 0; i < 2; i++)
         for (unsigned int type = 0; type < 7; type++)
@@ -74,14 +74,13 @@ bool Gameplay::makePlayerMove()
         case TO_HOLDING_CELL:
             {
                 BlockType activeBlock = board.getActiveBlock().getType();
-                if(isStoredBlock) board.setNewBlock(storedBlock);
+                if(holdingCell != NO_BLOCK) board.setNewBlock(holdingCell);
                 else{
-                    isStoredBlock = true;
                     board.setNewBlock(blocksQueue[blocksQueuePointer++]);
                     if (blocksQueuePointer >= blocksQueue.size())
                         redrawBlocks();
                 }
-                storedBlock = activeBlock;
+                holdingCell = activeBlock;
                 break;
             }
         case NONE:
@@ -130,6 +129,11 @@ unsigned int Gameplay::getDifficultyLevel() const
 const BlockType &Gameplay::getNextBlockType() const
 {
     return blocksQueue[blocksQueuePointer];
+}
+
+const BlockType Gameplay::getHoldingCellBlockType() const
+{
+    return holdingCell;
 }
 
 const Board &Gameplay::getBoard() const

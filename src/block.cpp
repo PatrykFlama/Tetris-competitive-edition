@@ -36,11 +36,15 @@ const std::vector<std::vector<bool>> blockMatrices[BLOCK_TYPES_COUNT] =
          {0, 1, 0, 0},
          {1, 1, 1, 0},
          {0, 0, 0, 0},
+         {0, 0, 0, 0}},
+        {// NO_BLOCK
+         {0, 0, 0, 0},
+         {0, 0, 0, 0},
+         {0, 0, 0, 0},
          {0, 0, 0, 0}}
-
 };
 
-unsigned int blockSizes[BLOCK_TYPES_COUNT] = {4, 3, 3, 2, 3, 3, 3};
+unsigned int blockSizes[BLOCK_TYPES_COUNT] = {4, 3, 3, 2, 3, 3, 3, 4};
 
 Block::Block(BlockType _type) : type(_type), size(blockSizes[type]), blockMatrix(blockMatrices[type]) {}
 
