@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-    Game game(HUMAN_VS_HUMAN);
+    Game game(SINGLE_PLAYER);
     UI ui;
 
     ui.drawGame(game);

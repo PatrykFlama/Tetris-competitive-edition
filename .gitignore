@@ -33,4 +33,8 @@
 
 # Others
 .vscode/*
-main
+src/main
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+Makefile
