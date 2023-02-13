@@ -37,8 +37,8 @@ class Board
 
     BoardPosition startingPosition;
 
-    std::vector<std::vector<bool>> board;
-    std::vector<std::vector<BlockType>> blockTypes;
+    std::vector<std::vector<bool> > board;
+    std::vector<std::vector<BlockType> > blockTypes;
 
     void resizeBoard(unsigned int newHeight, unsigned int newWidth);
 
@@ -54,8 +54,6 @@ public:
     Board(unsigned int _HEIGHT = DEFAULT_BOARD_HEIGHT, unsigned int _WIDTH = DEFAULT_BOARD_WIDTH);
     Block activeBlock;
     BoardPosition activeBlockPosition;
-
-    void tick(); // TODO
 
     void setNewBlock(BlockType type);
     const BoardPosition &getActiveBlockPosition() const;

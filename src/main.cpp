@@ -11,6 +11,7 @@
 
 int main(int argc, char *argv[])
 {
+    std::srand(std::time(0));
     Game game(SINGLE_PLAYER);
     UI ui;
 
@@ -29,8 +30,7 @@ int main(int argc, char *argv[])
 /* 
 TODO LIST / KNOWN ISUUES
 * block can be transfered to holding cell inf times
-* block collision problems
-* sometimes global buffer overflow happens (but just sometimes, so its OK)
+* sometimes global buffer overflow happens (but just sometimes, so its OK) - //! when block is dropped on another block (isCellFree(actualPosition) function)
 * UI could look better
 * multiplayer doesn't work
 * lack of story mode

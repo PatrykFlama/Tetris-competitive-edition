@@ -8,12 +8,13 @@ Gameplay::Gameplay(Player _player, unsigned int boardHeight, unsigned int boardW
                                                                                         time(&difficultyLevel),
                                                                                         holdingCell(NO_BLOCK)
 {
-    for (unsigned int i = 0; i < 2; i++)
+    for (unsigned int i = 0; i < 2; i++){
         for (unsigned int type = 0; type < 7; type++)
         {
             BlockType blockType = static_cast<BlockType>(type);
             blocksQueue.push_back(blockType);
         }
+    }
 }
 
 void Gameplay::redrawBlocks()

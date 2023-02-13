@@ -26,7 +26,7 @@ class Score
      29+            1 (0.02s)
     */
 
-    unsigned int hard_drop_points = 10;
+    unsigned int hard_drop_points = 5;
     float difficulty_multiplier = 0.2;
     unsigned int lines_points[4] = {100, 300, 500, 800};
     unsigned int tetris_combo_points = 200;

@@ -103,20 +103,20 @@ void Board::clearBoard()
         clearRow(row);
 }
 
-bool Board::isCellFree(BoardPosition position) const
-{
-    if (!isPositionValid(position)){
-        throw std::invalid_argument("Received invalid position");
-    }
-    return !board[position.row][position.col];
-}
-
 bool Board::isCellFull(BoardPosition position) const
 {
     if (!isPositionValid(position)){
         throw std::invalid_argument("Received invalid position");
     }
     return board[position.row][position.col];
+}
+
+bool Board::isCellFree(BoardPosition position) const
+{
+    if (!isPositionValid(position)){
+        return false;
+    }
+    return !board[position.row][position.col];  //TODO fix overflow which happens when this returns false
 }
 
 bool Board::isRowFree(unsigned int row) const
@@ -280,9 +280,4 @@ bool Board::attemptToSolidify()
     }
     hasActiveBlock = false;
     return true;
-}
-
-void Board::tick()
-{
-    return;
 }

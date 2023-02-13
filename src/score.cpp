@@ -1,6 +1,10 @@
 #include "score.h"
 
-Score::Score(unsigned int _difficultyLevel) : difficultyLevel(_difficultyLevel) {}
+Score::Score(unsigned int _difficultyLevel) :   difficultyLevel(_difficultyLevel), 
+                                                score(0),
+                                                combo(0),
+                                                tetris_combo(0)
+                                                {}
 
 void Score::blockDropped(unsigned int lines_broken, bool if_hard_drop)
 {
